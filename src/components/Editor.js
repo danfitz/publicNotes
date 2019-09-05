@@ -6,8 +6,10 @@ class Editor extends Component {
     super(props);
     this.state = {
       title: "",
-      body: ""
+      body: "",
+      saved: true
     };
+    this.timeoutId = null;
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -60,15 +62,15 @@ class Editor extends Component {
     // };
   };
 
-  submitSave = event => {
-    event.preventDefault();
-    this.saveNote();
-  };
+  // submitSave = event => {
+  //   event.preventDefault();
+  //   this.saveNote();
+  // };
 
-  saveNote = event => {
+  saveNote = () => {
     const noteObject = {
       title: this.state.title,
-      body: this.state.body
+      body: this.state.body,
     };
 
     if (this.props.currentNoteId) {
@@ -88,17 +90,30 @@ class Editor extends Component {
             this.props.selectNote(newNote.key);
         });
     };
+
+    this.setState({
+      saved: true
+    });
   };
 
   handleChange = event => {
+    // Auto save feature: only save note when user stops typing
+    clearTimeout(this.timeoutId);
+
+    this.timeoutId = setTimeout(() => {
+      this.saveNote();
+    }, 1000);
+
     this.setState({
-      [event.target.name]: event.target.value
+      [event.target.name]: event.target.value,
+      saved: false
     });
   };
 
   render() {
     return (
-      <form className="editor" onSubmit={this.submitSave}>
+      <section className="editor">
+        <p>{ this.state.saved ? "Saved" : "Autosaves when you stop typing..." }</p>
         <label htmlFor="title" className="visuallyHidden">
           Text input for title of note
         </label>
@@ -123,8 +138,7 @@ class Editor extends Component {
           value={this.state.body}
           onChange={this.handleChange}
         />
-        <input type="submit" value="Save Note" />
-      </form>
+      </section>
     );
   };
 };
