@@ -5,46 +5,46 @@ class Editor extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: null,
             title: "",
             body: ""
         };
     };
 
     componentDidUpdate(prevProps, prevState) {
+        // Conditional flow for changes in note change selection
+        if (this.props.currentNoteId !== prevProps.currentNoteId) {
+            // IF user selects a new existing note...
+            // THEN obtain the Firebase data and update state
+            if (this.props.currentNoteId) {
+                const noteRef = firebase.database().ref(this.props.currentNoteId);
         
-        if (this.props.currentNoteId !== this.state.id) {
-            const noteRef = firebase.database().ref(this.props.currentNoteId);
-            noteRef.on("value", response => {
-                const data = response.val();
-
-                this.setState({
-                    id: this.props.currentNoteId,
-                    title: data.title,
-                    body: data.body
+                noteRef.once("value", response => {
+                    const data = response.val();
+        
+                    this.setState({
+                        title: data.title,
+                        body: data.body
+                    });
                 });
-            });
+
+            // OTHERWISE the selected note was cleared (updated to null)...
+            // SO clear state
+            } else {
+                this.setState({
+                    title: "",
+                    body: ""
+                });
+            };
         };
 
-        if (this.state.id && (prevState.title !== this.state.title || prevState.body !== this.state.body)) {
-            const noteRef = firebase.database().ref(this.state.id);
+        // Update Firebase database only if a note is selected AND its title or text was changed by user
+        if (this.props.currentNoteId && (prevState.title !== this.state.title || prevState.body !== this.state.body)) {
+            const noteRef = firebase.database().ref(this.props.currentNoteId);
             noteRef.update({
                 title: this.state.title,
                 body: this.state.body
             });
         };
-
-
-        // const noteObject = {
-        //     title: this.state.title,
-        //     body: this.state.body
-        // };
-
-        // if (this.state.id) {
-        //     dbRef.child(this.state.id).set(noteObject);
-        // } else {
-        //     dbRef.push(noteObject);
-        // };
     };
 
     handleChange = event => {

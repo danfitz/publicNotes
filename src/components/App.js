@@ -36,6 +36,7 @@ class App extends Component {
   };
 
   selectNote = (noteId) => {
+    console.log("selectNote ran", noteId);
     this.setState({
       currentNoteId: noteId
     });

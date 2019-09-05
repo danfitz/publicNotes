@@ -9,13 +9,21 @@ class NotesList extends Component {
   addNewNote = () => {
     const dbRef = firebase.database().ref();
 
-    const newNoteId = dbRef.push({
+    const newNoteRef = dbRef.push({
       title: "",
       body: ""
     });
 
-    this.props.selectNote(newNoteId);
+    this.props.selectNote(newNoteRef.key);
   };
+
+  deleteNote = (noteId) => {
+    this.props.selectNote(null);
+    
+    console.log("I'm deleting...", noteId);
+    const noteRef = firebase.database().ref(noteId);
+    noteRef.remove();
+  }
 
   render() {
     return (
@@ -24,17 +32,19 @@ class NotesList extends Component {
         <ul className="notes">
           {this.props.notes.map(note => {
             return (
-              <li
-                key={note.id}
-                className="note"
-                onClick={() => this.props.selectNote(note.id)}
-              >
-                <h3>
-                  { note.title ? note.title : "Untitled Note" }
-                </h3>
-                <p>
-                  { note.body ? note.body : "Empty Note" }
-                </p>
+              <li key={note.id}>
+                <article
+                  className="note"
+                  onClick={() => this.props.selectNote(note.id)}
+                >
+                  <h3>
+                    { note.title ? note.title : "Untitled Note" }
+                  </h3>
+                  <p>
+                    { note.body ? note.body : "Empty Note" }
+                  </p>
+                </article>
+                <button onClick={() => this.deleteNote(note.id)}>Delete</button>
               </li>
             );
           })}
