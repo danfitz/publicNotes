@@ -1,0 +1,14 @@
+.editor {
+    background: lightblue;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    flex: 1 1 auto;
+}
+
+.body {
+    flex: 5 5 auto;
+}
