@@ -80,7 +80,10 @@ class Editor extends Component {
       const dbRef = firebase.database().ref();
 
       dbRef
-        .push(noteObject)
+        .push({
+          unixTimestamp: Date.now(),
+          ...noteObject
+        })
         .then(newNote => {
             this.props.selectNote(newNote.key);
         });

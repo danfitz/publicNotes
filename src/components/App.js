@@ -25,9 +25,13 @@ class App extends Component {
         notesArray.push({
           id: key,
           title: data[key].title,
-          body: data[key].body
+          body: data[key].body,
+          unixTimestamp: data[key].unixTimestamp
         });
       };
+
+      // Sort notes by newest created note first
+      notesArray.sort((a, b) => a.unixTimestamp < b.unixTimestamp);
       
       this.setState({
         notes: notesArray

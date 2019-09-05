@@ -11,7 +11,8 @@ class NotesList extends Component {
 
     dbRef.push({
       title: "",
-      body: ""
+      body: "",
+      unixTimestamp: Date.now()
     }).then(newNote => {
       this.props.selectNote(newNote.key);
     });
@@ -27,6 +28,11 @@ class NotesList extends Component {
     const noteRef = firebase.database().ref(noteId);
     noteRef.remove();
   }
+
+  convertTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+    return `Created: ${date.getFullYear()}/${date.getMonth()}/${date.getDay()}`;
+  };
 
   render() {
     return (
@@ -46,6 +52,7 @@ class NotesList extends Component {
                   <p>
                     { note.body ? note.body.substring(0, 10) + (note.body.length > 10 ? "..." : "") : "Empty Note" }
                   </p>
+                  <p>{ this.convertTimestamp(note.unixTimestamp) }</p>
                 </article>
                 <button onClick={() => this.deleteNote(note.id)}>Delete</button>
               </li>
