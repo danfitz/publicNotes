@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './styles/App.scss';
+import firebase from "./firebase.js";
 
 class App extends Component {
   render() {
