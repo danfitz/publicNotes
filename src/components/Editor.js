@@ -11,10 +11,10 @@ class Editor extends Component {
         };
     };
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
+        
         if (this.props.currentNoteId !== this.state.id) {
             const noteRef = firebase.database().ref(this.props.currentNoteId);
-
             noteRef.on("value", response => {
                 const data = response.val();
 
@@ -25,6 +25,16 @@ class Editor extends Component {
                 });
             });
         };
+
+        if (this.state.id && (prevState.title !== this.state.title || prevState.body !== this.state.body)) {
+            const noteRef = firebase.database().ref(this.state.id);
+            noteRef.update({
+                title: this.state.title,
+                body: this.state.body
+            });
+        };
+
+
         // const noteObject = {
         //     title: this.state.title,
         //     body: this.state.body

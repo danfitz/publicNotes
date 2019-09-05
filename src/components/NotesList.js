@@ -9,10 +9,12 @@ class NotesList extends Component {
   addNewNote = () => {
     const dbRef = firebase.database().ref();
 
-    dbRef.push({
+    const newNoteId = dbRef.push({
       title: "",
       body: ""
     });
+
+    this.props.selectNote(newNoteId);
   };
 
   render() {
@@ -25,7 +27,7 @@ class NotesList extends Component {
               <li
                 key={note.id}
                 className="note"
-                onClick={() => this.props.onNoteClick(note.id)}
+                onClick={() => this.props.selectNote(note.id)}
               >
                 <h3>
                   { note.title ? note.title : "Untitled Note" }

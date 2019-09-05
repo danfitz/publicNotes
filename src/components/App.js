@@ -35,7 +35,7 @@ class App extends Component {
     });
   };
 
-  onNoteClick = (noteId) => {
+  selectNote = (noteId) => {
     this.setState({
       currentNoteId: noteId
     });
@@ -45,7 +45,7 @@ class App extends Component {
     return (
       <main>
         <Editor currentNoteId={this.state.currentNoteId} />
-        <NotesList notes={this.state.notes} onNoteClick={this.onNoteClick} />
+        <NotesList notes={this.state.notes} selectNote={this.selectNote} />
       </main>
     );
   };
