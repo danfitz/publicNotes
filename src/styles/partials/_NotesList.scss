@@ -1,8 +1,21 @@
 .notesList {
+    padding: 1rem;
     background: palegreen;
     position: absolute;
     top: 0;
     right: 0;
     width: 20%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.notes {
+    padding: 0;
+    overflow-y: scroll;
+}
+
+.note:hover {
+    background: white;
 }

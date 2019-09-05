@@ -1,6 +1,14 @@
 // Setting up styles
 @import "partials/setup";
 
+html {
+    font-size: 125%;
+}
+
+ul {
+    list-style-type: none;
+}
+
 // Component partial styles
 @import "partials/Editor";
 @import "partials/NotesList";

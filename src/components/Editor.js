@@ -46,7 +46,9 @@ class Editor extends Component {
     render() {
         return (
             <section className="editor">
-                <label htmlFor="title" className="visuallyHidden">Text input for title of note</label>
+                <label htmlFor="title" className="visuallyHidden">
+                    Text input for title of note
+                </label>
                 <input
                     className="title"
                     id="title"
@@ -57,7 +59,9 @@ class Editor extends Component {
                     onChange={this.handleChange}
                 />
 
-                <label htmlFor="body" className="visuallyHidden">Text input for body of note</label>
+                <label htmlFor="body" className="visuallyHidden">
+                    Text input for body of note
+                </label>
                 <textarea
                     className="body"
                     id="body"
@@ -65,7 +69,7 @@ class Editor extends Component {
                     placeholder="Input text"
                     value={this.state.body}
                     onChange={this.handleChange}
-                ></textarea>
+                />
             </section>
         );
     };

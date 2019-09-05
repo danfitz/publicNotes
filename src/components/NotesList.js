@@ -1,29 +1,46 @@
-import React from "react";
+import React, { Component } from "react";
+import firebase from "../firebase.js";
 
-function NotesList(props) {
-  return (
-    <aside className="notesList">
-      <h2>List of Notes</h2>
-      <ul className="notes">
-        {props.notes.map(note => {
-          return (
-            <li
-              key={note.id}
-              className="note"
-              onClick={() => props.onNoteClick(note.id)}
-            >
-              <h3>
-                { note.title ? note.title : "Untitled Note" }
-              </h3>
-              <p>
-                { note.body ? note.body : "Empty Note" }
-              </p>
-            </li>
-          );
-        })}
-      </ul>
-    </aside>
-  );
+class NotesList extends Component {
+  constructor(props) {
+    super(props);
+  };
+  
+  addNewNote = () => {
+    const dbRef = firebase.database().ref();
+
+    dbRef.push({
+      title: "",
+      body: ""
+    });
+  };
+
+  render() {
+    return (
+      <aside className="notesList">
+        <h2>List of Notes</h2>
+        <ul className="notes">
+          {this.props.notes.map(note => {
+            return (
+              <li
+                key={note.id}
+                className="note"
+                onClick={() => this.props.onNoteClick(note.id)}
+              >
+                <h3>
+                  { note.title ? note.title : "Untitled Note" }
+                </h3>
+                <p>
+                  { note.body ? note.body : "Empty Note" }
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+        <button onClick={this.addNewNote}>Add New Note</button>
+      </aside>
+    );
+  }
 };
 
 export default NotesList;
