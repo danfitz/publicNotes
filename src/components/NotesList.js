@@ -4,6 +4,9 @@ import firebase from "../firebase.js";
 class NotesList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      inView: false
+    }
   };
 
   addNewNote = () => {
@@ -34,33 +37,42 @@ class NotesList extends Component {
     return `Created: ${date.getFullYear()}/${date.getMonth()}/${date.getDay()}`;
   };
 
+  toggleNotesList = () => {
+    this.setState({
+      inView: !this.state.inView
+    });
+  };
+  
   render() {
     return (
-      <aside className="notesList">
-        <h2>List of Notes</h2>
-        <ul className="notes">
-          {this.props.notes.map(note => {
-            return (
-              <li key={note.id}>
-                <article
-                  className={`note ${this.props.currentNoteId === note.id ? "selected" : ""}`}
-                  onClick={() => this.props.selectNote(note.id)}
-                >
-                  <h3>
-                    { note.title ? note.title : "Untitled Note" }
-                  </h3>
-                  <p>
-                    { note.body ? note.body.substring(0, 10) + (note.body.length > 10 ? "..." : "") : "Empty Note" }
-                  </p>
-                  <p>{ this.convertTimestamp(note.unixTimestamp) }</p>
-                </article>
-                <button onClick={() => this.deleteNote(note.id)}>Delete</button>
-              </li>
-            );
-          })}
-        </ul>
-        <button onClick={this.addNewNote}>Add New Note</button>
-      </aside>
+      <section>
+        <button className="toggle" onClick={this.toggleNotesList}>Toggle</button>
+        <aside className={`notesList ${ this.state.inView ? "displayed" : "hidden" }`}>
+          <h2>List of Notes</h2>
+          <ul className="notes">
+            {this.props.notes.map(note => {
+              return (
+                <li key={note.id}>
+                  <article
+                    className={`note ${this.props.currentNoteId === note.id ? "selected" : ""}`}
+                    onClick={() => this.props.selectNote(note.id)}
+                  >
+                    <h3>
+                      { note.title ? note.title : "Untitled Note" }
+                    </h3>
+                    <p>
+                      { note.body ? note.body.substring(0, 10) + (note.body.length > 10 ? "..." : "") : "Empty Note" }
+                    </p>
+                    <p>{ this.convertTimestamp(note.unixTimestamp) }</p>
+                  </article>
+                  <button onClick={() => this.deleteNote(note.id)}>Delete</button>
+                </li>
+              );
+            })}
+          </ul>
+          <button onClick={this.addNewNote}>Add New Note</button>
+        </aside>
+      </section>
     );
   }
 };

@@ -1,26 +1,45 @@
 .notesList {
-    padding: 1rem;
-    background: palegreen;
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 20%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  padding: 1rem;
+  background: palegreen;
+  position: fixed;
+  top: 0;
+  width: 20%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.5s;
+  }
+  
+.displayed {
+  right: 0;
+}
+
+.hidden {
+  right: -20%;
 }
 
 .notes {
-    padding: 0;
-    overflow-y: scroll;
-    cursor: pointer;
+  padding: 0;
+  overflow-y: scroll;
+  cursor: pointer;
 }
 
 .note:hover {
-    background: white;
+  background: white;
 }
 
 .selected {
   background: white;
+}
+
+.toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+  background: black;
+  color: white;
+  padding: 0.5rem;
+  border: none;
 }

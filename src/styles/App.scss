@@ -1,13 +1,8 @@
 // Setting up styles
 @import "partials/setup";
 
-html {
-    font-size: 125%;
-}
-
-ul {
-    list-style-type: none;
-}
+// Global styles
+@import "partials/global";
 
 // Component partial styles
 @import "partials/Editor";
