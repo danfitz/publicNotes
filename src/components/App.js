@@ -36,7 +36,7 @@ class App extends Component {
   };
 
   selectNote = (noteId) => {
-    console.log("selectNote ran", noteId);
+    // console.log("selectNote ran", noteId);
     this.setState({
       currentNoteId: noteId
     });
@@ -45,7 +45,7 @@ class App extends Component {
   render() {
     return (
       <main>
-        <Editor currentNoteId={this.state.currentNoteId} />
+        <Editor currentNoteId={this.state.currentNoteId} selectNote={this.selectNote} />
         <NotesList notes={this.state.notes} selectNote={this.selectNote} />
       </main>
     );

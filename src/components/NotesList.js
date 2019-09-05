@@ -5,16 +5,19 @@ class NotesList extends Component {
   constructor(props) {
     super(props);
   };
-  
+
   addNewNote = () => {
     const dbRef = firebase.database().ref();
 
-    const newNoteRef = dbRef.push({
+    dbRef.push({
       title: "",
       body: ""
+    }).then(newNote => {
+      this.props.selectNote(newNote.key);
     });
 
-    this.props.selectNote(newNoteRef.key);
+    // console.log(newNoteRef);
+    // this.props.selectNote(newNoteRef.key);
   };
 
   deleteNote = (noteId) => {
@@ -41,7 +44,7 @@ class NotesList extends Component {
                     { note.title ? note.title : "Untitled Note" }
                   </h3>
                   <p>
-                    { note.body ? note.body : "Empty Note" }
+                    { note.body ? note.body.substring(0, 10) + "..." : "Empty Note" }
                   </p>
                 </article>
                 <button onClick={() => this.deleteNote(note.id)}>Delete</button>
