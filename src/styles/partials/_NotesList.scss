@@ -14,8 +14,13 @@
 .notes {
     padding: 0;
     overflow-y: scroll;
+    cursor: pointer;
 }
 
 .note:hover {
     background: white;
+}
+
+.selected {
+  background: white;
 }

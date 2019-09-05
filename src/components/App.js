@@ -46,7 +46,7 @@ class App extends Component {
     return (
       <main>
         <Editor currentNoteId={this.state.currentNoteId} selectNote={this.selectNote} />
-        <NotesList notes={this.state.notes} selectNote={this.selectNote} />
+        <NotesList currentNoteId={this.state.currentNoteId} notes={this.state.notes} selectNote={this.selectNote} />
       </main>
     );
   };

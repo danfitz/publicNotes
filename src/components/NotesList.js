@@ -37,14 +37,14 @@ class NotesList extends Component {
             return (
               <li key={note.id}>
                 <article
-                  className="note"
+                  className={`note ${this.props.currentNoteId === note.id ? "selected" : ""}`}
                   onClick={() => this.props.selectNote(note.id)}
                 >
                   <h3>
                     { note.title ? note.title : "Untitled Note" }
                   </h3>
                   <p>
-                    { note.body ? note.body.substring(0, 10) + "..." : "Empty Note" }
+                    { note.body ? note.body.substring(0, 10) + (note.body.length > 10 ? "..." : "") : "Empty Note" }
                   </p>
                 </article>
                 <button onClick={() => this.deleteNote(note.id)}>Delete</button>
