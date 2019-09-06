@@ -9,7 +9,8 @@ class App extends Component {
     super();
     this.state = {
       currentNoteId: null,
-      notes: []
+      notes: [],
+      fullScreen: false
     }
   }
 
@@ -46,6 +47,12 @@ class App extends Component {
     });
   };
 
+  toggleFullScreen = () => {
+    this.setState({
+      fullScreen: !this.state.fullScreen
+    });
+  };
+
   render() {
     return (
       <div className="app">
@@ -53,11 +60,14 @@ class App extends Component {
           currentNoteId={this.state.currentNoteId}
           selectNote={this.selectNote}
           notes={this.state.notes}
+          fullScreen={this.state.fullScreen}
         />
         <Editor
           currentNoteId={this.state.currentNoteId}
           selectNote={this.selectNote}
+          fullScreen={this.state.fullScreen}
         />
+        <button className="fullScreenToggle" onClick={this.toggleFullScreen}>Full Screen</button>
       </div>
     );
   };

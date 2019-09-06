@@ -90,7 +90,7 @@ class Editor extends Component {
 
   render() {
     return (
-      <main>
+      <main className={ this.props.fullScreen ? "fullScreen" : ""}>
         <div className="wrapper">
           <section className="editor">
             <p>{ this.state.saved ? "Saved" : "Autosaves when you stop typing..." }</p>

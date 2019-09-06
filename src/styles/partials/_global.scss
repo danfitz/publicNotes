@@ -1,6 +1,18 @@
 html {
     font-size: 125%;
+  }
+  
+html, body, #root, .app {
+  height: 100%;
 }
+
+.app {
+  display: flex;
+}
+
+ul {
+    list-style-type: none;
+  }
 
 .wrapper {
   width: 90%;
@@ -8,13 +20,13 @@ html {
   margin: 0 auto;
 }
 
-.app {
-  // position: absolute;
-  // height: 100%;
-  // width: 100%;
-  display: flex;
-}
-
-ul {
-    list-style-type: none;
+.fullScreenToggle {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 50;
+  background: black;
+  color: white;
+  padding: 0.5rem;
+  border: none;
 }

@@ -1,8 +1,13 @@
 main {
-  background: lightblue;
-  flex: 1 1 80%;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  margin-left: 20%;
+  transition: margin-left 0.5s;
+}
+
+.fullScreen {
+  margin-left: 0;
 }
 
 .editor > * {

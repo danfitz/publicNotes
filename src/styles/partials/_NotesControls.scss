@@ -1,24 +1,19 @@
 header {
-  background: palegreen;
+  width: 20%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  background: black;
+  color: white;
+  transition: left 0.5s;
+}
+
+.collapsed {
+  left: -20%;
 }
 
 h1 {
   margin-top: 0;
-}
-
-.notesControls {
-  height: 100%;
-  transition: all 0.5s;
-}
-  
-.displayed {
-  position: static;
-  left: 0;
-}
-
-.hidden {
-  position: absolute;
-  left: -20%;
 }
 
 .notesList ul {
@@ -33,15 +28,5 @@ h1 {
 
 .selected {
   background: white;
-}
-
-.toggle {
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 50;
-  background: black;
-  color: white;
-  padding: 0.5rem;
-  border: none;
+  color: black;
 }
