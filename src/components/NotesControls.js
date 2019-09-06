@@ -52,7 +52,7 @@ class NotesControls extends Component {
                         onClick={() => this.props.selectNote(note.id)}
                       >
                         <h3>
-                          { note.title ? note.title : "Untitled Note" }
+                          { note.title ? note.title : "New Note" }
                         </h3>
                         <p>
                           { note.text ? note.text.substring(0, 10) + (note.text.length > 10 ? "..." : "") : "Empty Note" }

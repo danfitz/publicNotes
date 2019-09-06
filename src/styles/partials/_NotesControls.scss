@@ -4,9 +4,8 @@ header {
   padding: 2rem 0;
   position: absolute;
   left: 0;
-  background: black;
-  color: white;
   transition: left 0.5s;
+  border-right: 0.05rem solid #ddd;
 }
 
 .collapsed {
@@ -23,9 +22,15 @@ h1 {
 
 .notesList ul {
   margin: 0;
-  height: 50vh;
   padding: 0;
   overflow-y: scroll;
+  overflow-x: hidden;
+  height: 50vh;
+}
+
+.note {
+  padding: 0.5rem;
+  word-wrap: break-word;
 }
 
 .note h3 {
@@ -37,12 +42,10 @@ h1 {
 }
 
 .note:hover, .note:focus {
-  background: white;
-  color: black;
+  background: #eee;
   cursor: pointer;
 }
 
 .selected {
-  background: white;
-  color: black;
+  background: #eee;
 }

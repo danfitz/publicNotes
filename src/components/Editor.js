@@ -95,7 +95,7 @@ class Editor extends Component {
       <main className={ this.props.fullScreen ? "fullScreen" : ""}>
         <div className="wrapper">
           <section className="editor">
-            <p>ID: { this.props.currentNoteId }</p>
+            <p>ID: { this.props.currentNoteId ? this.props.currentNoteId : "N/A" }</p>
             <p>{ this.state.saved && this.props.currentNoteId ? "Saved" : "Autosaves when you stop typing..." }</p>
 
             <label htmlFor="titleInput" className="visuallyHidden">
