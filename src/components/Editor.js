@@ -6,7 +6,7 @@ class Editor extends Component {
     super(props);
     this.state = {
       title: "",
-      body: "",
+      text: "",
       saved: true
     };
     this.timeoutId = null;
@@ -25,7 +25,8 @@ class Editor extends Component {
 
           this.setState({
             title: data.title,
-            body: data.body
+            text: data.text,
+            saved: true
           });
         });
 
@@ -34,7 +35,8 @@ class Editor extends Component {
       } else {
         this.setState({
             title: "",
-            body: ""
+            text: "",
+            saved: false
         });
       };
     };
@@ -48,7 +50,7 @@ class Editor extends Component {
   saveNote = () => {
     const noteObject = {
       title: this.state.title,
-      body: this.state.body,
+      text: this.state.text,
     };
 
     if (this.props.currentNoteId) {
@@ -93,31 +95,33 @@ class Editor extends Component {
       <main className={ this.props.fullScreen ? "fullScreen" : ""}>
         <div className="wrapper">
           <section className="editor">
-            <p>{ this.state.saved ? "Saved" : "Autosaves when you stop typing..." }</p>
-            <label htmlFor="title" className="visuallyHidden">
+            <p>ID: { this.props.currentNoteId }</p>
+            <p>{ this.state.saved && this.props.currentNoteId ? "Saved" : "Autosaves when you stop typing..." }</p>
+
+            <label htmlFor="titleInput" className="visuallyHidden">
               Text input for title of note
             </label>
             <input
-              className="title"
-              id="title"
+              className="titleInput"
+              id="titleInput"
               type="text"
               name="title"
-              placeholder="Input title"
+              placeholder="New Note"
               value={this.state.title}
               onChange={this.handleChange}
             />
 
-            <label htmlFor="body" className="visuallyHidden">
-              Text input for body of note
+            <label htmlFor="textInput" className="visuallyHidden">
+              Text input for text of note
             </label>
             <textarea
-              className="body"
-              id="body"
-              name="body"
-              placeholder="Input text"
-              value={this.state.body}
+              className="textInput"
+              id="textInput"
+              name="text"
+              placeholder="Start writing..."
+              value={this.state.text}
               onChange={this.handleChange}
-            />
+              />    
           </section>
         </div>
       </main>

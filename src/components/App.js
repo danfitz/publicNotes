@@ -26,7 +26,7 @@ class App extends Component {
         notesArray.push({
           id: key,
           title: data[key].title,
-          body: data[key].body,
+          text: data[key].text,
           createdTimestamp: data[key].createdTimestamp
         });
       };

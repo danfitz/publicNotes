@@ -2,21 +2,34 @@ main {
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding: 2rem 0;
   margin-left: 20%;
   transition: margin-left 0.5s;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .fullScreen {
   margin-left: 0;
 }
 
-.editor > * {
-  display: block;
-  width: 100%;
-}
-.title {
+.editor p {
+  font-size: 1rem;
+  color: #999;
 }
 
-.body { 
-  height: 50%;
+.titleInput, .textInput {
+  display: block;
+  width: 100%;
+  border: none;
+  padding: 0.8rem;
+}
+
+.titleInput {
+  border-bottom: 0.05rem solid #bbb;
+  font-size: 2rem;
+}
+
+.textInput {
+  height: auto;
 }

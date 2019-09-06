@@ -11,7 +11,7 @@ class NotesControls extends Component {
 
     dbRef.push({
       title: "",
-      body: "",
+      text: "",
       createdTimestamp: Date.now()
     }).then(newNote => {
       this.props.selectNote(newNote.key);
@@ -55,9 +55,10 @@ class NotesControls extends Component {
                           { note.title ? note.title : "Untitled Note" }
                         </h3>
                         <p>
-                          { note.body ? note.body.substring(0, 10) + (note.body.length > 10 ? "..." : "") : "Empty Note" }
+                          { note.text ? note.text.substring(0, 10) + (note.text.length > 10 ? "..." : "") : "Empty Note" }
                         </p>
                         <p>{ this.convertToDate(note.createdTimestamp) }</p>
+                        <p>ID: {note.id}</p>
                       </article>
                       <button onClick={() => this.deleteNote(note.id)}>Delete</button>
                     </li>
