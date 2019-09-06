@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from "../firebase.js";
 import Editor from "./Editor.js";
-import NotesList from "./NotesList.js";
+import NotesControls from "./NotesControls.js";
 import '../styles/App.scss';
 
 class App extends Component {
@@ -26,12 +26,12 @@ class App extends Component {
           id: key,
           title: data[key].title,
           body: data[key].body,
-          unixTimestamp: data[key].unixTimestamp
+          createdTimestamp: data[key].createdTimestamp
         });
       };
 
       // Sort notes by newest created note first
-      notesArray.sort((a, b) => a.unixTimestamp < b.unixTimestamp);
+      notesArray.sort((a, b) => a.createdTimestamp < b.createdTimestamp);
       
       this.setState({
         notes: notesArray
@@ -48,10 +48,17 @@ class App extends Component {
 
   render() {
     return (
-      <main>
-        <Editor currentNoteId={this.state.currentNoteId} selectNote={this.selectNote} />
-        <NotesList currentNoteId={this.state.currentNoteId} notes={this.state.notes} selectNote={this.selectNote} />
-      </main>
+      <div className="app">
+        <NotesControls
+          currentNoteId={this.state.currentNoteId}
+          selectNote={this.selectNote}
+          notes={this.state.notes}
+        />
+        <Editor
+          currentNoteId={this.state.currentNoteId}
+          selectNote={this.selectNote}
+        />
+      </div>
     );
   };
 };

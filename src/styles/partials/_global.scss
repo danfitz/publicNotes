@@ -2,6 +2,19 @@ html {
     font-size: 125%;
 }
 
+.wrapper {
+  width: 90%;
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.app {
+  // position: absolute;
+  // height: 100%;
+  // width: 100%;
+  display: flex;
+}
+
 ul {
     list-style-type: none;
 }

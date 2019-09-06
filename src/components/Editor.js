@@ -38,28 +38,6 @@ class Editor extends Component {
         });
       };
     };
-
-    // Update Firebase database only if a note is selected AND its title or text was changed by user
-    // *** ON HOLD ***
-    // if (prevState.title !== this.state.title || prevState.body !== this.state.body) {
-    //     if (this.props.currentNoteId) {
-    //         const noteRef = firebase.database().ref(this.props.currentNoteId);
-    //         noteRef.update({
-    //             title: this.state.title,
-    //             body: this.state.body
-    //         });
-    //     } else {
-    //         const dbRef = firebase.database().ref();
-
-    //         dbRef.push({
-    //             title: this.state.title,
-    //             body: this.state.body
-    //         }).then(newNote => {
-    //             this.props.selectNote(newNote.key);
-    //         });
-
-    //     };
-    // };
   };
 
   // submitSave = event => {
@@ -83,7 +61,7 @@ class Editor extends Component {
 
       dbRef
         .push({
-          unixTimestamp: Date.now(),
+          createdTimestamp: Date.now(),
           ...noteObject
         })
         .then(newNote => {
@@ -112,33 +90,37 @@ class Editor extends Component {
 
   render() {
     return (
-      <section className="editor">
-        <p>{ this.state.saved ? "Saved" : "Autosaves when you stop typing..." }</p>
-        <label htmlFor="title" className="visuallyHidden">
-          Text input for title of note
-        </label>
-        <input
-          className="title"
-          id="title"
-          type="text"
-          name="title"
-          placeholder="Input title"
-          value={this.state.title}
-          onChange={this.handleChange}
-        />
+      <main>
+        <div className="wrapper">
+          <section className="editor">
+            <p>{ this.state.saved ? "Saved" : "Autosaves when you stop typing..." }</p>
+            <label htmlFor="title" className="visuallyHidden">
+              Text input for title of note
+            </label>
+            <input
+              className="title"
+              id="title"
+              type="text"
+              name="title"
+              placeholder="Input title"
+              value={this.state.title}
+              onChange={this.handleChange}
+            />
 
-        <label htmlFor="body" className="visuallyHidden">
-          Text input for body of note
-        </label>
-        <textarea
-          className="body"
-          id="body"
-          name="body"
-          placeholder="Input text"
-          value={this.state.body}
-          onChange={this.handleChange}
-        />
-      </section>
+            <label htmlFor="body" className="visuallyHidden">
+              Text input for body of note
+            </label>
+            <textarea
+              className="body"
+              id="body"
+              name="body"
+              placeholder="Input text"
+              value={this.state.body}
+              onChange={this.handleChange}
+            />
+          </section>
+        </div>
+      </main>
     );
   };
 };

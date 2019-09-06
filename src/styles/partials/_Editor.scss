@@ -1,14 +1,14 @@
-.editor {
+main {
   background: lightblue;
-  width: 100%;
+  flex: 1 1 80%;
   display: flex;
   flex-direction: column;
-
-  > * {
-    display: block;
-  }
 }
 
+.editor > * {
+  display: block;
+  width: 100%;
+}
 .title {
 }
 
