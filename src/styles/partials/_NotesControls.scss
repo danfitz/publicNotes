@@ -1,51 +1,78 @@
-header {
-  width: 20%;
-  height: 100%;
-  padding: 2rem 0;
-  position: absolute;
-  left: 0;
-  transition: left 0.5s;
-  border-right: 0.05rem solid #ddd;
+.addNote {
+  color: green;
+  cursor: pointer;
 }
 
-.collapsed {
-  left: -20%;
-}
-
-h1 {
-  margin-top: 0;
+.addNote:hover, .addNote:focus {
+  color: darkgreen;
 }
 
 .notesControls {
   height: 100%;
 }
 
+.notesList h2 {
+  font-size: 1.1rem;
+  line-height: 1.1rem;
+}
+
 .notesList ul {
-  margin: 0;
-  padding: 0;
   overflow-y: scroll;
   overflow-x: hidden;
   height: 50vh;
+  width: calc(100% + 0.5rem);
 }
 
 .note {
-  padding: 0.5rem;
+  border-top: 0.05rem solid #ddd;
+  padding: 0.2rem;
   word-wrap: break-word;
+  position: relative;
 }
 
-.note h3 {
+.noteTitle {
   margin: 0;
+  font-size: 0.9rem;
+  font-weight: 300;
 }
 
 .note p {
+  margin: 0.1rem;
+}
+
+.noteText {
+  font-size: 0.7rem;
+  color: #555;
+}
+
+.noteCreateDate {
   font-size: 0.6rem;
+  font-style: italic;
+  color: #888;
+}
+
+.deleteNote {
+  position: absolute;
+  z-index: 10;
+  top: 0.25rem;
+  right: 0.25rem;
+  font-size: 1.2rem !important;
+  color: #FF5733 ;
+  opacity: 0;
+}
+
+.deleteNote:hover {
+  cursor: not-allowed;
+}
+
+.note:hover .deleteNote {
+  opacity: 1;
 }
 
 .note:hover, .note:focus {
-  background: #eee;
-  cursor: pointer;
+  background: rgba(166, 255, 166, 0.521);
 }
 
 .selected {
-  background: #eee;
+  background: rgb(164, 255, 164) !important;
 }

@@ -1,7 +1,24 @@
+// Google fonts
+@import url('https://fonts.googleapis.com/css?family=Open+Sans|Poppins:300,400&display=swap');
+
+// Text content
 html {
     font-size: 125%;
+    font-family: "Open Sans", sans-serif;
   }
-  
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+// Sizing
 html, body, #root, .app {
   height: 100%;
   overflow: hidden;
@@ -11,23 +28,40 @@ html, body, #root, .app {
   display: flex;
 }
 
-ul {
-    list-style-type: none;
-  }
-
 .wrapper {
   width: 90%;
   max-width: 60rem;
   margin: 0 auto;
 }
 
+// Full screen button
 .fullScreenToggle {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
   z-index: 50;
-  background: black;
-  color: white;
-  padding: 0.5rem;
-  border: none;
+  cursor: pointer;
 }
+
+// Header
+header {
+  width: 20%;
+  height: 100%;
+  padding: 2rem 0;
+  position: absolute;
+  left: 0;
+  transition: left 0.5s;
+  border-right: 0.05rem solid #ddd;
+}
+
+.collapsed {
+  left: -20%;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 2rem;
+  line-height: 3rem;
+}
+
+// Main

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import firebase from "../firebase.js";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 class Editor extends Component {
   constructor(props) {
@@ -92,39 +93,35 @@ class Editor extends Component {
 
   render() {
     return (
-      <main className={ this.props.fullScreen ? "fullScreen" : ""}>
-        <div className="wrapper">
-          <section className="editor">
-            <p>ID: { this.props.currentNoteId ? this.props.currentNoteId : "N/A" }</p>
-            <p>{ this.state.saved && this.props.currentNoteId ? "Saved" : "Autosaves when you stop typing..." }</p>
+      <section className="editor">
+        <p>ID: { this.props.currentNoteId ? this.props.currentNoteId : "N/A" }</p>
+        <p>{ this.state.saved && this.props.currentNoteId ? "Saved" : "Autosaves when you stop typing..." }</p>
 
-            <label htmlFor="titleInput" className="visuallyHidden">
-              Text input for title of note
-            </label>
-            <input
-              className="titleInput"
-              id="titleInput"
-              type="text"
-              name="title"
-              placeholder="New Note"
-              value={this.state.title}
-              onChange={this.handleChange}
-            />
+        <label htmlFor="titleInput" className="visuallyHidden">
+          Text input for title of note
+        </label>
+        <input
+          className="titleInput"
+          id="titleInput"
+          type="text"
+          name="title"
+          placeholder="New Note"
+          value={this.state.title}
+          onChange={this.handleChange}
+        />
 
-            <label htmlFor="textInput" className="visuallyHidden">
-              Text input for text of note
-            </label>
-            <textarea
-              className="textInput"
-              id="textInput"
-              name="text"
-              placeholder="Start writing..."
-              value={this.state.text}
-              onChange={this.handleChange}
-              />    
-          </section>
-        </div>
-      </main>
+        <label htmlFor="textInput" className="visuallyHidden">
+          Text input for text of note
+        </label>
+        <TextareaAutosize
+          className="textInput"
+          id="textInput"
+          name="text"
+          placeholder="Start writing..."
+          value={this.state.text}
+          onChange={this.handleChange}
+        />    
+      </section>
     );
   };
 };

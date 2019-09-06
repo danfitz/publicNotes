@@ -2,8 +2,8 @@ main {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 2rem 0;
   margin-left: 20%;
+  margin-top: 2rem;
   transition: margin-left 0.5s;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -22,14 +22,17 @@ main {
   display: block;
   width: 100%;
   border: none;
+  border-radius: 0;
   padding: 0.8rem;
 }
 
 .titleInput {
-  border-bottom: 0.05rem solid #bbb;
+  border-bottom: 0.05rem solid #ddd;
   font-size: 2rem;
+  font-family: "Poppins", sans-serif;
 }
 
 .textInput {
-  height: auto;
+  resize: none;
+  margin-bottom: 2rem;
 }

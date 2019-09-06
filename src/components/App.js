@@ -3,6 +3,7 @@ import firebase from "../firebase.js";
 import Editor from "./Editor.js";
 import NotesControls from "./NotesControls.js";
 import '../styles/App.scss';
+import { Fullscreen, FullscreenExit } from "@material-ui/icons";
 
 class App extends Component {
   constructor() {
@@ -41,7 +42,6 @@ class App extends Component {
   };
 
   selectNote = (noteId) => {
-    // console.log("selectNote ran", noteId);
     this.setState({
       currentNoteId: noteId
     });
@@ -56,18 +56,28 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <NotesControls
-          currentNoteId={this.state.currentNoteId}
-          selectNote={this.selectNote}
-          notes={this.state.notes}
-          fullScreen={this.state.fullScreen}
-        />
-        <Editor
-          currentNoteId={this.state.currentNoteId}
-          selectNote={this.selectNote}
-          fullScreen={this.state.fullScreen}
-        />
-        <button className="fullScreenToggle" onClick={this.toggleFullScreen}>Full Screen</button>
+        <header className={this.state.fullScreen ? "collapsed" : ""}>
+          <div className="wrapper">
+            <h1>Note App</h1>
+            <NotesControls
+              currentNoteId={this.state.currentNoteId}
+              selectNote={this.selectNote}
+              notes={this.state.notes}
+            />
+          </div>
+        </header>
+        <main className={this.state.fullScreen ? "fullScreen" : ""}>
+          <div className="wrapper">
+            <Editor
+              currentNoteId={this.state.currentNoteId}
+              selectNote={this.selectNote}
+            />
+          </div>
+        </main>
+        {this.state.fullScreen ?
+          <FullscreenExit className="fullScreenToggle" onClick={this.toggleFullScreen} /> :
+          <Fullscreen className="fullScreenToggle" onClick={this.toggleFullScreen} />
+        }
       </div>
     );
   };
