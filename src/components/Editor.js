@@ -94,8 +94,7 @@ class Editor extends Component {
   render() {
     return (
       <section className="editor">
-        <p>ID: { this.props.currentNoteId ? this.props.currentNoteId : "N/A" }</p>
-        <p>{ this.state.saved && this.props.currentNoteId ? "Saved" : "Autosaves when you stop typing..." }</p>
+        <p className="saveStatus">{ this.state.saved && this.props.currentNoteId ? "Saved" : "Autosaves when you stop typing..." }</p>
 
         <label htmlFor="titleInput" className="visuallyHidden">
           Text input for title of note
