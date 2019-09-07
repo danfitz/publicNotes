@@ -5,10 +5,14 @@ import NotesControls from "./NotesControls.js";
 import '../styles/App.scss';
 import { Fullscreen, FullscreenExit } from "@material-ui/icons";
 
+const provider = new firebase.auth.GoogleAuthProvider();
+const auth = firebase.auth();
+
 class App extends Component {
   constructor() {
     super();
     this.state = {
+      user: null,
       currentNoteId: null,
       notes: [],
       fullScreen: false
@@ -16,6 +20,12 @@ class App extends Component {
   }
 
   componentDidMount() {
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.setState({ user });
+      };
+    });
+
     const dbRef = firebase.database().ref();
 
     dbRef.on("value", (response) => {
@@ -53,11 +63,31 @@ class App extends Component {
     });
   };
 
+  login = () => {
+    auth.signInWithPopup(provider)
+      .then((result) => {
+        const user = result.user;
+        this.setState({
+          user
+        });
+      });
+  };
+
+  logout = () => {
+    auth.signOut()
+      .then(() => {
+        this.setState({
+          user: null
+        });
+      });
+  };
+
   render() {
     return (
       <div className="app">
         <header className={this.state.fullScreen ? "collapsed" : ""}>
           <div className="wrapper">
+            {this.state.user ? <p>Not {this.state.user.displayName}? <button onClick={this.logout}>Log Out</button></p> : <button onClick={this.login}>Log In</button> }
             <h1>Note App</h1>
             <NotesControls
               currentNoteId={this.state.currentNoteId}
