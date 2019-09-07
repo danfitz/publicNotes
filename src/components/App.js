@@ -22,6 +22,19 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // EVENT LISTENER:
+    // If user is anonymous, delete their unique record when they leave the site or refresh
+    window.addEventListener('beforeunload', (event) => {
+      if (this.state.user === "anonymous") {
+        const userRef = firebase.database().ref(this.state.userNode);
+
+        userRef.remove();
+      };
+
+      //beforeunload needs to return something, so delete the return to work in chrome
+      delete event['returnValue'];
+    });
+
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         console.log("I'm changing to real user!");
