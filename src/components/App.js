@@ -25,6 +25,9 @@ class App extends Component {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         console.log("I'm changing to real user!");
+
+        this.notesSync(`users/${user.uid}`);
+
         this.setState({
           user,
           userNode: `users/${user.uid}` 
@@ -32,6 +35,8 @@ class App extends Component {
       } else {
         console.log("I'm changing to anonymous user!");
         const anonymousUser = await firebase.database().ref("anonymous").push("");
+
+        this.notesSync(`anonymous/${anonymousUser.key}`);
 
         this.setState({
           user: "anonymous",
@@ -41,42 +46,38 @@ class App extends Component {
     });
   };
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.user !== this.state.user) {
-      console.log("User node changed:", prevState.userNode && prevState.userNode !== this.state.userNode);
-      console.log("Previous user node", prevState.userNode);
-      console.log("New user node:", this.state.userNode);
-      // Turn off previous event listener IF there was one before
-      if (prevState.userNode && prevState.userNode !== this.state.userNode) {
-        console.log("I'm about to change the Firebase event listener");
-        firebase.database().ref(prevState.userNode).off("value");
-      };
-
-      // Start new event listener
-      const userRef = firebase.database().ref(this.state.userNode);
-      
-      userRef.on("value", (response) => {
-        const data = response.val();
-    
-        const notesArray = [];
-    
-        for (let key in data) {
-          notesArray.push({
-            id: key,
-            title: data[key].title,
-            text: data[key].text,
-            createdTimestamp: data[key].createdTimestamp
-          });
-        };
-    
-        // Sort notes by newest created note first
-        notesArray.sort((a, b) => a.createdTimestamp < b.createdTimestamp);
-        
-        this.setState({
-          notes: notesArray
-        });
-      });
+  notesSync = (newUserNode) => {
+    console.log("I'm syncing to...", newUserNode);
+    console.log("and turning off...", this.state.userNode);
+    // Turn off previous event listener IF there was one before
+    if (this.state.userNode) {
+      firebase.database().ref(this.state.userNode).off("value");
     };
+
+    // Start new event listener
+    const userRef = firebase.database().ref(newUserNode);
+    
+    userRef.on("value", (response) => {
+      const data = response.val();
+  
+      const notesArray = [];
+  
+      for (let key in data) {
+        notesArray.push({
+          id: key,
+          title: data[key].title,
+          text: data[key].text,
+          createdTimestamp: data[key].createdTimestamp
+        });
+      };
+  
+      // Sort notes by newest created note first
+      notesArray.sort((a, b) => a.createdTimestamp < b.createdTimestamp);
+      
+      this.setState({
+        notes: notesArray
+      });
+    });
   };
 
   selectNote = (noteId) => {
