@@ -13,22 +13,33 @@ class App extends Component {
     super();
     this.state = {
       user: null,
+      userNode: null,
       currentNoteId: null,
       notes: [],
       fullScreen: false
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
         this.setState({ user });
       };
     });
 
-    const dbRef = firebase.database().ref();
+    let userNode;
 
-    dbRef.on("value", (response) => {
+    if (this.state.user) {
+      userNode = `users/${this.state.user.uid}`;
+    } else {
+      const anonymousUser = await firebase.database().ref("anonymous").push({ created: true });
+      
+      userNode = `anonymous/${anonymousUser.key}`;
+    };
+
+    const userRef = firebase.database().ref(userNode);
+
+    userRef.on("value", (response) => {
       const data = response.val();
 
       const notesArray = [];
@@ -46,7 +57,8 @@ class App extends Component {
       notesArray.sort((a, b) => a.createdTimestamp < b.createdTimestamp);
       
       this.setState({
-        notes: notesArray
+        notes: notesArray,
+        userNode: userNode
       });
     });
   };
@@ -68,7 +80,8 @@ class App extends Component {
       .then((result) => {
         const user = result.user;
         this.setState({
-          user
+          user,
+          userNode: `users/${user.uid}`
         });
       });
   };
@@ -87,12 +100,13 @@ class App extends Component {
       <div className="app">
         <header className={this.state.fullScreen ? "collapsed" : ""}>
           <div className="wrapper">
-            {this.state.user ? <p>Not {this.state.user.displayName}? <button onClick={this.logout}>Log Out</button></p> : <button onClick={this.login}>Log In</button> }
             <h1>Note App</h1>
+            {this.state.user ? <p>Not {this.state.user.displayName}? <button onClick={this.logout}>Log Out</button></p> : <p>Anonymous <button onClick={this.login}>Log In</button></p> }
             <NotesControls
               currentNoteId={this.state.currentNoteId}
               selectNote={this.selectNote}
               notes={this.state.notes}
+              userNode={this.state.userNode}
             />
           </div>
         </header>
@@ -101,6 +115,7 @@ class App extends Component {
             <Editor
               currentNoteId={this.state.currentNoteId}
               selectNote={this.selectNote}
+              userNode={this.state.userNode}
             />
           </div>
         </main>

@@ -8,9 +8,9 @@ class NotesControls extends Component {
   };
 
   addNewNote = () => {
-    const dbRef = firebase.database().ref();
+    const userRef = firebase.database().ref(this.props.userNode);
 
-    dbRef.push({
+    userRef.push({
       title: "",
       text: "",
       createdTimestamp: Date.now()
@@ -23,7 +23,7 @@ class NotesControls extends Component {
     if (window.confirm("This will delete your note permanently.")) {
       this.props.selectNote(null);
       
-      const noteRef = firebase.database().ref(noteId);
+      const noteRef = firebase.database().ref(`${this.props.userNode}/${noteId}`);
       noteRef.remove();
     };
   };
