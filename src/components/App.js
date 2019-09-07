@@ -21,24 +21,34 @@ class App extends Component {
     }
   }
 
-  async componentDidMount() {
-    auth.onAuthStateChanged((user) => {
+  componentDidMount() {
+    auth.onAuthStateChanged(async (user) => {
       if (user) {
-        this.setState({ user });
+        console.log("I'm changing to real user!");
+        this.setState({
+          user,
+          userNode: `users/${user.uid}` 
+        });
+      } else {
+        console.log("I'm changing to anonymous user!");
+        const anonymousUser = await firebase.database().ref("anonymous").push("");
+
+        this.setState({
+          user: "anonymous",
+          userNode: `anonymous/${anonymousUser.key}`
+        });
       };
-    });
-
-    const userNode = await this.getUserNode();
-
-    this.setState({
-      userNode: userNode
     });
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.userNode !== this.state.userNode) {
+    if (prevState.user !== this.state.user) {
+      console.log("User node changed:", prevState.userNode && prevState.userNode !== this.state.userNode);
+      console.log("Previous user node", prevState.userNode);
+      console.log("New user node:", this.state.userNode);
       // Turn off previous event listener IF there was one before
-      if (prevState.userNode) {
+      if (prevState.userNode && prevState.userNode !== this.state.userNode) {
+        console.log("I'm about to change the Firebase event listener");
         firebase.database().ref(prevState.userNode).off("value");
       };
 
@@ -69,20 +79,6 @@ class App extends Component {
     };
   };
 
-  getUserNode = async () => {
-    let userNode;
-
-    if (this.state.user) {
-      userNode = `users/${this.state.user.uid}`;
-    } else {
-      const anonymousUser = await firebase.database().ref("anonymous").push("");
-
-      userNode = `anonymous/${anonymousUser.key}`;
-    };
-
-    return userNode;
-  };
-
   selectNote = (noteId) => {
     this.setState({
       currentNoteId: noteId
@@ -100,20 +96,16 @@ class App extends Component {
       .then((result) => {
         const user = result.user;
         this.setState({
-          user,
-          userNode: `users/${user.uid}`
+          user
         });
       });
   };
 
   logout = () => {
     auth.signOut()
-      .then(async () => {
-        const userNode = await this.getUserNode();
+      .then(() => {
         this.setState({
-          user: null,
-          userNode: userNode
-          // NEED TO CREATE NEW ANONYMOUS USER AND CHANGE USERNODE
+          user: "anonymous"
         });
       });
   };
@@ -124,7 +116,7 @@ class App extends Component {
         <header className={this.state.fullScreen ? "collapsed" : ""}>
           <div className="wrapper">
             <h1>Public Notes</h1>
-            {this.state.user ? <p>Not {this.state.user.displayName}?<br /><br /><Button variant="outlined" color="secondary" onClick={this.logout}>Log Out</Button></p> : <p>Anonymous User<br /><br /><Button variant="outlined" color="primary" onClick={this.login}>Log In</Button></p> }
+            {this.state.user !== "anonymous" && this.state.user !== null ? <p>Not {this.state.user.displayName}?<br /><br /><Button variant="outlined" color="secondary" onClick={this.logout}>Log Out</Button></p> : <p>Anonymous User<br /><br /><Button variant="outlined" color="primary" onClick={this.login}>Log In</Button></p> }
             <NotesControls
               currentNoteId={this.state.currentNoteId}
               selectNote={this.selectNote}

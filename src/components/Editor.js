@@ -19,7 +19,7 @@ class Editor extends Component {
       // IF user selects a new existing note...
       // THEN obtain the Firebase data and update state
       if (this.props.currentNoteId) {
-        const noteRef = firebase.database().ref(this.props.currentNoteId);
+        const noteRef = firebase.database().ref(`${this.props.userNode}/${this.props.currentNoteId}`);
 
         noteRef.once("value", response => {
           const data = response.val();
