@@ -55,14 +55,14 @@ class Editor extends Component {
     };
 
     if (this.props.currentNoteId) {
-      const noteRef = firebase.database().ref(this.props.currentNoteId);
+      const noteRef = firebase.database().ref(`${this.props.userNode}/${this.props.currentNoteId}`);
 
       noteRef.update(noteObject);
 
     } else {
-      const dbRef = firebase.database().ref();
+      const userRef = firebase.database().ref(this.props.userNode);
 
-      dbRef
+      userRef
         .push({
           createdTimestamp: Date.now(),
           ...noteObject

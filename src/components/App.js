@@ -4,6 +4,7 @@ import Editor from "./Editor.js";
 import NotesControls from "./NotesControls.js";
 import '../styles/App.scss';
 import { Fullscreen, FullscreenExit } from "@material-ui/icons";
+import { Button } from "@material-ui/core";
 
 const provider = new firebase.auth.GoogleAuthProvider();
 const auth = firebase.auth();
@@ -27,40 +28,59 @@ class App extends Component {
       };
     });
 
+    const userNode = await this.getUserNode();
+
+    this.setState({
+      userNode: userNode
+    });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.userNode !== this.state.userNode) {
+      // Turn off previous event listener IF there was one before
+      if (prevState.userNode) {
+        firebase.database().ref(prevState.userNode).off("value");
+      };
+
+      // Start new event listener
+      const userRef = firebase.database().ref(this.state.userNode);
+      
+      userRef.on("value", (response) => {
+        const data = response.val();
+    
+        const notesArray = [];
+    
+        for (let key in data) {
+          notesArray.push({
+            id: key,
+            title: data[key].title,
+            text: data[key].text,
+            createdTimestamp: data[key].createdTimestamp
+          });
+        };
+    
+        // Sort notes by newest created note first
+        notesArray.sort((a, b) => a.createdTimestamp < b.createdTimestamp);
+        
+        this.setState({
+          notes: notesArray
+        });
+      });
+    };
+  };
+
+  getUserNode = async () => {
     let userNode;
 
     if (this.state.user) {
       userNode = `users/${this.state.user.uid}`;
     } else {
-      const anonymousUser = await firebase.database().ref("anonymous").push({ created: true });
-      
+      const anonymousUser = await firebase.database().ref("anonymous").push("");
+
       userNode = `anonymous/${anonymousUser.key}`;
     };
 
-    const userRef = firebase.database().ref(userNode);
-
-    userRef.on("value", (response) => {
-      const data = response.val();
-
-      const notesArray = [];
-
-      for (let key in data) {
-        notesArray.push({
-          id: key,
-          title: data[key].title,
-          text: data[key].text,
-          createdTimestamp: data[key].createdTimestamp
-        });
-      };
-
-      // Sort notes by newest created note first
-      notesArray.sort((a, b) => a.createdTimestamp < b.createdTimestamp);
-      
-      this.setState({
-        notes: notesArray,
-        userNode: userNode
-      });
-    });
+    return userNode;
   };
 
   selectNote = (noteId) => {
@@ -88,9 +108,12 @@ class App extends Component {
 
   logout = () => {
     auth.signOut()
-      .then(() => {
+      .then(async () => {
+        const userNode = await this.getUserNode();
         this.setState({
-          user: null
+          user: null,
+          userNode: userNode
+          // NEED TO CREATE NEW ANONYMOUS USER AND CHANGE USERNODE
         });
       });
   };
@@ -100,8 +123,8 @@ class App extends Component {
       <div className="app">
         <header className={this.state.fullScreen ? "collapsed" : ""}>
           <div className="wrapper">
-            <h1>Note App</h1>
-            {this.state.user ? <p>Not {this.state.user.displayName}? <button onClick={this.logout}>Log Out</button></p> : <p>Anonymous <button onClick={this.login}>Log In</button></p> }
+            <h1>Public Notes</h1>
+            {this.state.user ? <p>Not {this.state.user.displayName}?<br /><br /><Button variant="outlined" color="secondary" onClick={this.logout}>Log Out</Button></p> : <p>Anonymous User<br /><br /><Button variant="outlined" color="primary" onClick={this.login}>Log In</Button></p> }
             <NotesControls
               currentNoteId={this.state.currentNoteId}
               selectNote={this.selectNote}
