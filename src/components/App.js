@@ -26,9 +26,8 @@ class App extends Component {
     // If user is anonymous, delete their unique record when they leave the site or refresh
     window.addEventListener('beforeunload', (event) => {
       if (this.state.user === "anonymous") {
-        const userRef = firebase.database().ref(this.state.userNode);
-
-        userRef.remove();
+        const anonymousRef = firebase.database().ref(this.state.userNode);
+        anonymousRef.remove();
       };
 
       //beforeunload needs to return something, so delete the return to work in chrome
@@ -39,7 +38,7 @@ class App extends Component {
       if (user) {
         console.log("I'm changing to real user!");
 
-        this.notesSync(`users/${user.uid}`);
+        this.syncNotes(`users/${user.uid}`);
 
         this.setState({
           user,
@@ -49,7 +48,7 @@ class App extends Component {
         console.log("I'm changing to anonymous user!");
         const anonymousUser = await firebase.database().ref("anonymous").push("");
 
-        this.notesSync(`anonymous/${anonymousUser.key}`);
+        this.syncNotes(`anonymous/${anonymousUser.key}`);
 
         this.setState({
           user: "anonymous",
@@ -59,7 +58,7 @@ class App extends Component {
     });
   };
 
-  notesSync = (newUserNode) => {
+  syncNotes = (newUserNode) => {
     console.log("I'm syncing to...", newUserNode);
     console.log("and turning off...", this.state.userNode);
     // Turn off previous event listener IF there was one before
@@ -108,6 +107,9 @@ class App extends Component {
   login = () => {
     auth.signInWithPopup(provider)
       .then((result) => {
+        const anonymousRef = firebase.database().ref(this.state.userNode);
+        anonymousRef.remove();
+
         const user = result.user;
         this.setState({
           user
