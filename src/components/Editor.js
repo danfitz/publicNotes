@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import firebase from "../firebase.js";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import SimpleMDE from "react-simplemde-editor";
+import "easymde/dist/easymde.min.css";
 
 class Editor extends Component {
   constructor(props) {
@@ -85,10 +87,17 @@ class Editor extends Component {
       this.saveNote();
     }, 1000);
 
-    this.setState({
-      [event.target.name]: event.target.value,
-      saved: false
-    });
+    if (event.target) {
+      this.setState({
+        [event.target.name]: event.target.value,
+        saved: false
+      });
+    } else {
+      this.setState({
+        text: event,
+        saved: false
+      });
+    };
   };
 
   render() {
@@ -112,14 +121,19 @@ class Editor extends Component {
         <label htmlFor="textInput" className="visuallyHidden">
           Text input for text of note
         </label>
-        <TextareaAutosize
+        {/* <TextareaAutosize
           className="textInput"
           id="textInput"
           name="text"
           placeholder="Start writing..."
           value={this.state.text}
           onChange={this.handleChange}
-        />    
+        /> */}
+        <SimpleMDE
+          onChange={this.handleChange}
+          value={this.state.text}
+          id="textInput"
+        />
       </section>
     );
   };
