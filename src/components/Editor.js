@@ -103,8 +103,6 @@ class Editor extends Component {
   render() {
     return (
       <section className="editor">
-        <p className="saveStatus">{ this.state.saved && this.props.currentNoteId ? "Saved" : "Autosaves when you stop typing..." }</p>
-
         <label htmlFor="titleInput" className="visuallyHidden">
           Text input for title of note
         </label>
@@ -118,6 +116,10 @@ class Editor extends Component {
           onChange={this.handleChange}
         />
 
+        <p className="saveStatus">
+          { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : <span className="saving">Auto-saves when you stop writing...</span> }
+        </p>
+
         <label htmlFor="textInput" className="visuallyHidden">
           Text input for text of note
         </label>
@@ -130,9 +132,14 @@ class Editor extends Component {
           onChange={this.handleChange}
         /> */}
         <SimpleMDE
+          className="textInput"
+          id="textInput"
           onChange={this.handleChange}
           value={this.state.text}
-          id="textInput"
+          options={{
+            placeholder: "Start writing...",
+            promptURLs: true
+          }}
         />
       </section>
     );

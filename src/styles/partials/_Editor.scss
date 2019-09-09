@@ -1,24 +1,32 @@
 .saveStatus {
-  margin-top: 0;
-  font-size: 1rem;
-  color: #999;
+  margin: 0.5rem 0;
+  padding-left: 0.5rem;
+  font-size: 0.8rem;
+  color: $fadedColorVeryDark;
 }
 
-.titleInput, .textInput {
+.titleInput {
   display: block;
   width: 100%;
   border: none;
   border-radius: 0;
-  padding: 0.8rem;
-}
-
-.titleInput {
-  border-bottom: 0.05rem solid #ddd;
   font-size: 2rem;
-  font-family: "Poppins", sans-serif;
+  font-family: $headingFont;
+  font-weight: 500;
+  padding-left: 0.5rem;
 }
 
 .textInput {
-  resize: none;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  padding: 0;
+  font-size: 0.8rem;
+}
+
+// Markdown editor style overrides
+.editor-toolbar {
+  border: none;
+}
+
+.CodeMirror {
+  border-radius: 0.2rem;
 }

@@ -1,0 +1,124 @@
+.authContainer {
+  margin-bottom: 0.5rem;
+}
+
+.authStatus {
+  font-size: 0.8rem;
+  color: $fadedColorVeryDark;
+  margin: 0.5rem 0;
+}
+
+// Here I am overriding the colours of the Material UI buttons in .login and .logout
+// Not the best solution, so I know I'll need to revisit this when I have more time
+.login {
+  color: $accentColorDark !important;
+  border: 0.05rem solid $accentColorDark !important;
+}
+
+.logout {
+  color: $fadedColorVeryDark !important;
+  border: 0.05rem solid $fadedColorVeryDark !important;
+}
+
+.notesList {
+  width: 110%;
+  position: relative;
+  left: -5%;
+  flex: 1 1 auto;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.notesListHeader {
+  margin: 0 5%;
+  display: flex;
+  align-items: center;
+}
+
+.notesListHeader h2 {
+  font-size: 1rem;
+  line-height: 1rem;
+}
+
+.addNote {
+  color: $accentColorDark;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+.addNote:hover, .addNote:focus {
+  color: $accentColorLight;
+}
+
+.notesList ul {
+  border-radius: 0.2rem;
+  flex: 1 1 auto;
+  overflow-y: auto;
+}
+
+.note {
+  padding: 0.3rem;
+  margin: 0.05rem 0;
+  word-wrap: break-word;
+  position: relative;
+  background: white;
+  border-radius: 0.2rem;
+}
+
+.note::after {
+  content: "";
+  position: absolute;
+  left: 5%;
+  bottom: -0.05rem;
+  width: 90%;
+  height: 0.05rem;
+  background: $fadedColorDark;
+}
+
+.noteTitle {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 300;
+}
+
+.note p {
+  margin: 0.1rem;
+}
+
+.noteText {
+  font-size: 0.65rem;
+  // color: #555;
+}
+
+.noteCreateDate {
+  font-size: 0.6rem;
+  font-style: italic;
+  // color: #888;
+}
+
+.deleteNote {
+  position: absolute;
+  z-index: 10;
+  top: calc(50% - 0.55rem);
+  right: 0.25rem;
+  font-size: 1.1rem !important; // another Material UI style override
+  color: $fadedColorVeryDark;
+}
+
+.deleteNote:hover {
+  cursor: pointer;
+}
+
+.note:hover, .note:focus {
+  background: $fadedColorLight;
+}
+
+.selected {
+  background: $accentColorDark !important; // another Material UI style override
+  color: white;
+}
+
+.selected .deleteNote {
+  color: white;
+}

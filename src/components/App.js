@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from "../firebase.js";
 import Editor from "./Editor.js";
-import NotesControls from "./NotesControls.js";
+import NotesList from "./NotesList.js";
 import '../styles/App.scss';
 import { Fullscreen, FullscreenExit } from "@material-ui/icons";
 import { Button } from "@material-ui/core";
@@ -126,14 +126,50 @@ class App extends Component {
       });
   };
 
+  renderAuth = () => {
+    if (this.state.user !== "anonymous" && this.state.user !== null) {
+      return (
+        <div className="authContainer">
+          <Button
+            className="logout"
+            variant="outlined"
+            size="small"
+            color="#999"
+            onClick={this.logout}
+          >
+            Log Out
+          </Button>
+          <p className="authStatus">Hi, {this.state.user.displayName}!</p>
+        </div>
+      );
+    } else {
+        return (
+          <div className="authContainer">
+            <Button
+              className="login"
+              variant="outlined"
+              size="small"
+              color="#4caf50"
+              onClick={this.login}
+            >
+              Log In
+            </Button>
+            <p className="authStatus">Log in via Google to start saving notes.</p>
+          </div>
+        );
+    };
+  };
+
   render() {
     return (
       <div className="app">
         <header className={this.state.fullScreen ? "collapsed" : ""}>
-          <div className="wrapper">
+          <div className="headerWrapper wrapper">
             <h1>Public Notes</h1>
-            {this.state.user !== "anonymous" && this.state.user !== null ? <p>Not {this.state.user.displayName}?<br /><br /><Button variant="outlined" color="secondary" onClick={this.logout}>Log Out</Button></p> : <p>Anonymous User<br /><br /><Button variant="outlined" color="primary" onClick={this.login}>Log In</Button></p> }
-            <NotesControls
+
+            {this.renderAuth()}
+
+            <NotesList
               currentNoteId={this.state.currentNoteId}
               selectNote={this.selectNote}
               notes={this.state.notes}
@@ -141,6 +177,7 @@ class App extends Component {
             />
           </div>
         </header>
+
         <main className={this.state.fullScreen ? "fullScreen" : ""}>
           <div className="wrapper">
             <Editor
@@ -150,6 +187,7 @@ class App extends Component {
             />
           </div>
         </main>
+
         {this.state.fullScreen ?
           <FullscreenExit className="fullScreenToggle" onClick={this.toggleFullScreen} /> :
           <Fullscreen className="fullScreenToggle" onClick={this.toggleFullScreen} />
