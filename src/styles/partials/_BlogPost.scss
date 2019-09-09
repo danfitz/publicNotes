@@ -1,0 +1,40 @@
+.publicFeedIntro {
+  // color: white;
+  background: $fadedColorLight;
+  padding: 1rem;
+  border-radius: 0.2rem;
+  overflow-wrap: break-word;
+}
+
+.publicFeedIntro p {
+  color : $fadedColorVeryDark;
+}
+
+.uid {
+  color: white;
+  background: $accentColorVeryDark;
+  padding: 0 0.2rem;
+  border-radius: 0.2rem;
+}
+
+.blogPost {
+  margin-top: 2rem;
+}
+
+.blogPost .postTitle {
+  padding-left: 1.5rem;
+  font-size: 2rem;
+  position: relative;
+}
+
+.blogPost .postTitle::after {
+  content: "";
+  position: absolute;
+  left: 0rem;
+  // left: 1rem;
+  top: 0;
+  height: 100%;
+  width: 0.9rem;
+  // width: 10rem;
+  background: adjust-color($accentColorDark, $alpha: -0.5);
+}

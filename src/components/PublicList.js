@@ -1,10 +1,51 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
+import firebase from "../firebase.js";
 import { Notes } from "@material-ui/icons";
 
 class PublicList extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      notes: []
+    };
+  };
+
+  componentDidMount() {
+    this.getNotes();
+  };
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.uid !== this.props.match.params.uid) {
+      this.getNotes();
+    };
+  };
+
+  getNotes = () => {
+    const userNode = `${this.props.match.params.node}/${this.props.match.params.uid}`;
+    const userRef = firebase.database().ref(userNode);
+
+    userRef.once("value", response => {
+      const data = response.val();
+
+      const notesArray = [];
+
+      for (let key in data) {
+        notesArray.push({
+          id: key,
+          title: data[key].title,
+          published: data[key].published,
+          createdTimestamp: data[key].createdTimestamp
+        });
+      };
+
+      // Sort notes by newest created note first
+      notesArray.sort((a, b) => a.createdTimestamp < b.createdTimestamp);
+
+      this.setState({
+        notes: notesArray
+      });
+    });
   };
 
   // Method for converting timestamp to YYYY/M/D H:M datetime format
@@ -16,7 +57,7 @@ class PublicList extends Component {
   conditionalPrivateRender = () => {
     return (
       <div className="toggleView">
-        <NavLink to="/"><Notes /> Switch to Notes View</NavLink>
+        <NavLink to="/"><Notes /> Switch to My Notes</NavLink>
       </div>
     );
   };
@@ -31,7 +72,7 @@ class PublicList extends Component {
           {this.conditionalPrivateRender()}
         </div>
         <ul>
-          {this.props.notes.filter(note => note.published).map(note => {
+          {this.state.notes.filter(note => note.published).map(note => {
             return (
               <li key={note.id}>
                 <NavLink to={`/${this.props.match.params.node}/${this.props.match.params.uid}/${note.id}`}>

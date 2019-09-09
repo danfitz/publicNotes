@@ -11,24 +11,27 @@ class BlogPost extends Component {
     };
   };
 
-  // Any time the user enters public view, this makes sure that a note is never selected!
-  // componentDidMount() {
-  //   this.props.selectNote(null);
-  // };
+  componentDidMount() {
+    this.getNote();
+  };
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.noteId !== this.props.match.params.noteId) {
-      const noteNode = `${this.props.match.params.node}/${this.props.match.params.uid}/${this.props.match.params.noteId}`;
-      const noteRef = firebase.database().ref(noteNode);
-  
-      noteRef.once("value", response => {
-        const data = response.val();
-  
-        this.setState({
-          post: data
-        });
-      });
+      this.getNote();
     };
+  };
+
+  getNote = () => {
+    const noteNode = `${this.props.match.params.node}/${this.props.match.params.uid}/${this.props.match.params.noteId}`;
+    const noteRef = firebase.database().ref(noteNode);
+
+    noteRef.once("value", response => {
+      const data = response.val();
+
+      this.setState({
+        post: data
+      });
+    });
   };
 
   conditionalRender() {

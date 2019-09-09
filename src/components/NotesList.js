@@ -60,7 +60,7 @@ class NotesList extends Component {
         <ul>
           {this.props.notes.map(note => {
             return (
-              <li key={note.id}>
+              <li key={note.id} tabIndex="0">
                 <article
                   className={`note ${this.props.currentNoteId === note.id ? "selected" : ""}`}
                   onClick={() => this.props.selectNote(note.id)}

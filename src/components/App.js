@@ -80,7 +80,6 @@ class App extends Component {
 
     // Start new Firebase event listener to constantly grab notes in database
     const newNode = `${newUser.node}/${newUser.uid}`;
-    console.log(newNode);
     const userRef = firebase.database().ref(newNode);
     
     userRef.on("value", (response) => {
@@ -100,7 +99,6 @@ class App extends Component {
   
       // Sort notes by newest created note first
       notesArray.sort((a, b) => a.createdTimestamp < b.createdTimestamp);
-      console.log(notesArray);
       
       this.setState({
         notes: notesArray
@@ -193,25 +191,21 @@ class App extends Component {
 
               {this.renderAuth()}
 
+              <Route exact path="/" render={ () => {
+                return (
+                  <NotesList
+                  currentNoteId={this.state.currentNoteId}
+                  selectNote={this.selectNote}
+                  notes={this.state.notes}
+                  user={this.state.user}
+                  />
+                );
+              }} />
 
               <Route path="/:node/:uid" render={ (params) => {
                 return (
                   <PublicList
                     {...params}
-                    currentNoteId={this.state.currentNoteId}
-                    selectNote={this.selectNote}
-                    notes={this.state.notes}
-                  />
-                );
-              }} />
-
-              <Route exact path="/" render={ () => {
-                return (
-                  <NotesList
-                    currentNoteId={this.state.currentNoteId}
-                    selectNote={this.selectNote}
-                    notes={this.state.notes}
-                    user={this.state.user}
                   />
                 );
               }} />
@@ -220,17 +214,6 @@ class App extends Component {
 
           <main className={this.state.fullScreen ? "fullScreen" : ""}>
             <div className="wrapper">
-              <Route exact path="/:node/:uid/:noteId" render={ (params) => {
-                console.log("Trying to render blog post");
-                return (
-                  <BlogPost
-                    {...params}
-                    currentNoteId={this.state.currentNoteId}
-                    selectNote={this.selectNote}
-                  />
-                );
-              }} />
-
               <Route exact path="/" render={ () => {
                 return (
                   <Editor
@@ -240,6 +223,18 @@ class App extends Component {
                   />
                 );
               }} />
+
+              <Route path="/:node/:uid" render={ (params) => {
+                const uid = this.state.user ? params.match.params.uid : "N/A";
+                return (
+                  <section className="publicFeedIntro">
+                    <h2>Public Feed of User: <span className="uid">{uid}</span></h2>
+                    <p>To view a note, select any of this user's notes in the sidebar!</p>
+                  </section>
+                );
+              }} />
+
+              <Route exact path="/:node/:uid/:noteId" render={params => <BlogPost {...params} />} />
             </div>
           </main>
 
