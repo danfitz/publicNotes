@@ -9,12 +9,12 @@ class NotesList extends Component {
 
   // Method for adding a new note at the current user node
   addNewNote = () => {
-    const userRef = firebase.database().ref(this.props.userNode);
+    const userRef = firebase.database().ref(`${this.props.user.node}/${this.props.user.uid}`);
 
     userRef.push({
       title: "",
       text: "",
-      published: true,
+      published: false,
       createdTimestamp: Date.now()
     }).then(newNote => {
       this.props.selectNote(newNote.key);
@@ -26,7 +26,8 @@ class NotesList extends Component {
     if (window.confirm("This will delete your note permanently.")) {
       this.props.selectNote(null);
       
-      const noteRef = firebase.database().ref(`${this.props.userNode}/${noteId}`);
+      const noteNode = `${this.props.user.node}/${this.props.user.uid}/${noteId}`;
+      const noteRef = firebase.database().ref(noteNode);
       noteRef.remove();
     };
   };
@@ -63,7 +64,7 @@ class NotesList extends Component {
                     { note.title ? note.title : "New Note" }
                   </h3>
                   <p className="noteText">
-                    { note.text ? note.text.substring(0, 10).trim() + (note.text.trim().length > 10 ? "..." : "") : "Empty Note" }
+                    { note.text ? note.text.substring(0, 20).trim() + (note.text.trim().length > 20 ? "..." : "") : "Empty Note" }
                   </p>
                   <p className="noteCreateDate">{ this.convertToDate(note.createdTimestamp) }</p>
                 </article>

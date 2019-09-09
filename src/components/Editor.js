@@ -9,18 +9,21 @@ class Editor extends Component {
     this.state = {
       title: "",
       text: "",
-      saved: true
+      saved: false,
+      published: false
     };
     this.timeoutId = null;
   };
 
   componentDidUpdate(prevProps, prevState) {
-    // Conditional flow for changes in note change selection
+    // Conditional flow for changes in selected note
     if (this.props.currentNoteId !== prevProps.currentNoteId) {
       // IF user selects a new existing note...
       // THEN obtain the Firebase data and update state
       if (this.props.currentNoteId) {
-        const noteRef = firebase.database().ref(`${this.props.userNode}/${this.props.currentNoteId}`);
+        const noteNode = `${this.props.user.node}/${this.props.user.uid}/${this.props.currentNoteId}`;
+
+        const noteRef = firebase.database().ref(noteNode);
 
         noteRef.once("value", response => {
           const data = response.val();
@@ -28,6 +31,7 @@ class Editor extends Component {
           this.setState({
             title: data.title,
             text: data.text,
+            published: data.published,
             saved: true
           });
         });
@@ -38,6 +42,7 @@ class Editor extends Component {
         this.setState({
             title: "",
             text: "",
+            published: false,
             saved: false
         });
       };
@@ -49,24 +54,24 @@ class Editor extends Component {
     const noteObject = {
       title: this.state.title,
       text: this.state.text,
+      published: this.state.published
     };
-
 
     // IF the note being saved is the current note selected,
     // THEN save at that note's node in Firebase
     if (this.props.currentNoteId) {
-      const noteRef = firebase.database().ref(`${this.props.userNode}/${this.props.currentNoteId}`);
+      const noteNode = `${this.props.user.node}/${this.props.user.uid}/${this.props.currentNoteId}`;
+      const noteRef = firebase.database().ref(noteNode);
       noteRef.update(noteObject);
 
     // OTHERWISE the note is new,
     // SO save the note at a new node in Firebase
     } else {
-      const userRef = firebase.database().ref(this.props.userNode);
+      const userRef = firebase.database().ref(`${this.props.user.node}/${this.props.user.uid}`);
 
       userRef
         .push({
           createdTimestamp: Date.now(),
-          published: true,
           ...noteObject
         })
         .then(newNote => {
@@ -122,6 +127,18 @@ class Editor extends Component {
         <p className="saveStatus">
           { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : "Auto-saves when you stop writing" }
         </p>
+
+        <label htmlFor="publishInput">
+          Make note public
+        </label>
+        <input
+          className="publishInput"
+          id="publishInput"
+          type="checkbox"
+          name="published"
+          value={this.state.published}
+          onChange={this.handleChange}
+        />
 
         <label htmlFor="textInput" className="visuallyHidden">
           Text input for text of note

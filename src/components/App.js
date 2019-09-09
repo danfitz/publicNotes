@@ -22,7 +22,6 @@ class App extends Component {
     super();
     this.state = {
       user: null,
-      userNode: null,
       currentNoteId: null,
       notes: [],
       fullScreen: false
@@ -35,22 +34,24 @@ class App extends Component {
       // IF there is a logged in authorized user,
       // THEN sync to that user's node in Firebase
       if (user) {
-        this.syncNotes(`users/${user.uid}`);
+        user.node = "users"; // adding node key to user
+
+        this.syncNotes(user);
 
         this.setState({
-          user,
-          userNode: `users/${user.uid}` 
+          user
         });
       // OTHERWISE the user is anonymous,
       // SO create a new anonymous user node in Firebase
       } else {
         const anonymousUser = await firebase.database().ref("anonymous").push("");
+        anonymousUser.node = "anonymous"; // adding node key to anonymous user
+        anonymousUser.uid = anonymousUser.key;
 
-        this.syncNotes(`anonymous/${anonymousUser.key}`);
+        this.syncNotes(anonymousUser);
 
         this.setState({
-          user: "anonymous",
-          userNode: `anonymous/${anonymousUser.key}`
+          user: anonymousUser
         });
       };
     });
@@ -58,8 +59,9 @@ class App extends Component {
     // EVENT LISTENER:
     // If user is anonymous, delete their unique record when they leave the site or refresh
     window.addEventListener('beforeunload', (event) => {
-      if (this.state.user === "anonymous") {
-        const anonymousRef = firebase.database().ref(this.state.userNode);
+      if (this.state.user && this.state.user.node === "anonymous") {
+        const anonymousNode = `${this.state.user.node}/${this.state.user.uid}`;
+        const anonymousRef = firebase.database().ref(anonymousNode);
         anonymousRef.remove();
       };
 
@@ -69,14 +71,17 @@ class App extends Component {
   };
 
   // Method to sync notes to given user node in Firebase
-  syncNotes = (newUserNode) => {
+  syncNotes = (newUser) => {
     // Turn off previous Firebase event listener IF there was one before
-    if (this.state.userNode) {
-      firebase.database().ref(this.state.userNode).off("value");
+    if (this.state.user) {
+      const oldNode = `${this.state.user.node}/${this.state.user.uid}`;
+      firebase.database().ref(oldNode).off("value");
     };
 
     // Start new Firebase event listener to constantly grab notes in database
-    const userRef = firebase.database().ref(newUserNode);
+    const newNode = `${newUser.node}/${newUser.uid}`;
+    console.log(newNode);
+    const userRef = firebase.database().ref(newNode);
     
     userRef.on("value", (response) => {
       const data = response.val();
@@ -95,6 +100,7 @@ class App extends Component {
   
       // Sort notes by newest created note first
       notesArray.sort((a, b) => a.createdTimestamp < b.createdTimestamp);
+      console.log(notesArray);
       
       this.setState({
         notes: notesArray
@@ -106,8 +112,7 @@ class App extends Component {
   // NOTE: Gets passed to child components
   selectNote = (noteId) => {
     this.setState({
-      currentNoteId: noteId,
-      // fullScreen: !this.state.fullScreen
+      currentNoteId: noteId
     });
   };
 
@@ -123,10 +128,12 @@ class App extends Component {
   login = () => {
     auth.signInWithPopup(provider)
       .then((result) => {
-        const anonymousRef = firebase.database().ref(this.state.userNode);
+        const anonymousNode = `${this.state.user.node}/${this.state.user.uid}`;
+        const anonymousRef = firebase.database().ref(anonymousNode);
         anonymousRef.remove();
 
         const user = result.user;
+        user.node = "users"; // Adding node key to user
         this.setState({
           user
         });
@@ -138,14 +145,14 @@ class App extends Component {
     auth.signOut()
       .then(() => {
         this.setState({
-          user: "anonymous"
+          user: null
         });
       });
   };
 
   // Method for conditionally rendering login and logout on page
   renderAuth = () => {
-    if (this.state.user !== "anonymous" && this.state.user !== null) {
+    if (this.state.user && this.state.user.node !== "anonymous") {
       return (
         <div className="authContainer">
           <Button
@@ -170,7 +177,7 @@ class App extends Component {
             >
               Log In
             </Button>
-            <p className="authStatus">Log in via Google to start saving notes.</p>
+            <p className="authStatus">This is a testing environment. Log in for the full experience.</p>
           </div>
         );
     };
@@ -187,23 +194,22 @@ class App extends Component {
               {this.renderAuth()}
 
               {this.state.user ? 
-                <NavLink to={`/blog/${this.state.user.uid}`}>Blog</NavLink> :
+                <NavLink to={`/${this.state.user.uid}`}>View Your Public Notes</NavLink> :
                 ""
               }
-              <NavLink to="/">Notes</NavLink>
 
               <NotesList
                 currentNoteId={this.state.currentNoteId}
                 selectNote={this.selectNote}
                 notes={this.state.notes}
-                userNode={this.state.userNode}
+                user={this.state.user}
               />
             </div>
           </header>
 
           <main className={this.state.fullScreen ? "fullScreen" : ""}>
             <div className="wrapper">
-              <Route exact path="/blog/:userId" render={ (props) => {
+              <Route exact path="/:userId" render={ (props) => {
                 return (
                   <Blog {...props} />
                 );
@@ -214,7 +220,7 @@ class App extends Component {
                   <Editor
                     currentNoteId={this.state.currentNoteId}
                     selectNote={this.selectNote}
-                    userNode={this.state.userNode}
+                    user={this.state.user}
                   />
                 );
               }} />
