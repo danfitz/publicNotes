@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import firebase from "../firebase.js";
 import Editor from "./Editor.js";
 import NotesList from "./NotesList.js";
-import Blog from "./Blog.js";
-import BlogList from "./BlogList.js";
+import BlogPost from "./BlogPost.js";
+import PublicList from "./PublicList.js";
 
 import {
   BrowserRouter as Router,
@@ -194,8 +194,15 @@ class App extends Component {
               {this.renderAuth()}
 
 
-              <Route exact path="/:node/:uid" render={ () => {
-                return <BlogList notes={this.state.notes} />;
+              <Route path="/:node/:uid" render={ (params) => {
+                return (
+                  <PublicList
+                    {...params}
+                    currentNoteId={this.state.currentNoteId}
+                    selectNote={this.selectNote}
+                    notes={this.state.notes}
+                  />
+                );
               }} />
 
               <Route exact path="/" render={ () => {
@@ -213,8 +220,15 @@ class App extends Component {
 
           <main className={this.state.fullScreen ? "fullScreen" : ""}>
             <div className="wrapper">
-              <Route exact path="/:node/:uid" render={ (props) => {
-                return <Blog {...props} notes={this.state.notes} />;
+              <Route exact path="/:node/:uid/:noteId" render={ (params) => {
+                console.log("Trying to render blog post");
+                return (
+                  <BlogPost
+                    {...params}
+                    currentNoteId={this.state.currentNoteId}
+                    selectNote={this.selectNote}
+                  />
+                );
               }} />
 
               <Route exact path="/" render={ () => {
