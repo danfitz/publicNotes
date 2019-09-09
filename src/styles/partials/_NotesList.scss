@@ -1,3 +1,5 @@
+// NOTE: This styles both the NotesList AND PublicList components!
+
 .authContainer {
   margin-bottom: 0.5rem;
 }
@@ -58,6 +60,7 @@
   margin: 0.2rem 0;
   
   a {
+    outline: 0;
     text-decoration: none;
     color: $accentColorDark;
     font-size: 0.7rem !important;
@@ -87,6 +90,17 @@
   position: relative;
   background: white;
   border-radius: 0.2rem;
+}
+
+.note:hover, .note:focus {
+  outline: 0;
+  background: $fadedColorLight;
+  border: none;
+}
+
+.noteLink {
+  text-decoration: none;
+  color: $textColor;
 }
 
 .note::after {
@@ -141,10 +155,6 @@
   text-transform: uppercase;
   color: white;
   background: $accentColorVeryDark;
-}
-
-.note:hover, .note:focus {
-  background: $fadedColorLight;
 }
 
 .selected {

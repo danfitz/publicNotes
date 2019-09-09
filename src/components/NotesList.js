@@ -57,11 +57,12 @@ class NotesList extends Component {
           <AddCircleOutlined onClick={this.addNewNote} className="addNote" />
           {this.conditionalPublicRender()}
         </div>
-        <ul>
+        <ul tabIndex="-1">
           {this.props.notes.map(note => {
             return (
-              <li key={note.id} tabIndex="0">
+              <li key={note.id}>
                 <article
+                  tabIndex="0"
                   className={`note ${this.props.currentNoteId === note.id ? "selected" : ""}`}
                   onClick={() => this.props.selectNote(note.id)}
                 >
