@@ -59,7 +59,7 @@ class NotesList extends Component {
                     { note.title ? note.title : "New Note" }
                   </h3>
                   <p className="noteText">
-                    { note.text ? note.text.substring(0, 10).trim() + (note.text.length > 10 ? "..." : "") : "Empty Note" }
+                    { note.text ? note.text.substring(0, 10).trim() + (note.text.trim().length > 10 ? "..." : "") : "Empty Note" }
                   </p>
                   <p className="noteCreateDate">{ this.convertToDate(note.createdTimestamp) }</p>
                 </article>

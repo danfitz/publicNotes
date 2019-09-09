@@ -117,7 +117,7 @@ class Editor extends Component {
         />
 
         <p className="saveStatus">
-          { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : <span className="saving">Auto-saves when you stop writing...</span> }
+          { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : "Auto-saves when you stop writing..." }
         </p>
 
         <label htmlFor="textInput" className="visuallyHidden">
