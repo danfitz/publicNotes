@@ -18,6 +18,11 @@ class Editor extends Component {
   // Any time the editor is mounted, this makes sure that a note is never selected!
   componentDidMount() {
     this.props.selectNote(null);
+
+    this.setState({
+      title: "Welcome to Public Notes",
+      text: "## How it Works\n1. Create a new note.\n2. Write note using [Markdown](https://www.markdownguide.org/basic-syntax/). (Guide is in the \"?\" icon above.)\n3. If you want a note to go **public**, checkmark \"Make note public\" above.\n4. A URL will appear. You can share it with anyone!\n![Public Notes GIF](https://gph.is/1sCgsZP)"
+    });
   };
 
   componentDidUpdate(prevProps, prevState) {
