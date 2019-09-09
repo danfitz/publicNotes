@@ -84,7 +84,7 @@
 }
 
 .note {
-  padding: 0.3rem;
+  padding: 0.3rem 0.35rem;
   margin: 0.05rem 0;
   word-wrap: break-word;
   position: relative;
@@ -116,22 +116,21 @@
 .noteTitle {
   margin: 0;
   font-size: 0.8rem;
-  font-weight: 300;
+  font-weight: 400;
+  letter-spacing: 0.08rem;
 }
 
 .note p {
-  margin: 0.1rem;
+  margin: 0.1rem 0;
 }
 
 .noteText {
   font-size: 0.7rem;
-  // color: #555;
 }
 
 .noteCreateDate {
   font-size: 0.65rem;
   font-style: italic;
-  // color: #888;
 }
 
 .deleteNote {

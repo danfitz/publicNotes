@@ -239,8 +239,8 @@ class App extends Component {
           </main>
 
           {this.state.fullScreen ?
-            <FullscreenExit className="fullScreenToggle" onClick={this.toggleFullScreen} /> :
-            <Fullscreen className="fullScreenToggle" onClick={this.toggleFullScreen} />
+            <FullscreenExit className="fullScreenToggle" onClick={this.toggleFullScreen} aria-label="Exit full screen and display header" /> :
+            <Fullscreen className="fullScreenToggle" onClick={this.toggleFullScreen} aria-label="Enter full screen and hide header" />
           }
         </div>
       </Router>
