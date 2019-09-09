@@ -1,4 +1,4 @@
-.saveStatus {
+.saveStatus, .publishContainer {
   margin: 0.5rem 0;
   padding-left: 0.5rem;
   font-size: 0.8rem;
@@ -8,6 +8,11 @@
 .saved {
   color: $accentColorDark;
 }
+
+// .publishContainer {
+//   padding-left: 0.5rem;
+//   font-size: 0.8rem;
+// }
 
 .titleInput {
   display: block;

@@ -33,10 +33,12 @@
 .notesListHeader {
   margin: 0 5%;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 
 .notesListHeader h2 {
+  margin: 0;
   font-size: 1rem;
   line-height: 1rem;
 }
@@ -48,7 +50,28 @@
 }
 
 .addNote:hover, .addNote:focus {
-  color: $accentColorLight;
+  color: $accentColorVeryDark;
+}
+
+.toggleView {
+  width: 100%;
+  margin: 0.2rem 0;
+  
+  a {
+    text-decoration: none;
+    color: $accentColorDark;
+    font-size: 0.7rem !important;
+    display: flex;
+    align-items: center;
+  }
+
+  svg {
+    margin-right: 0.1rem;
+  }
+}
+
+.toggleView a:hover, .toggleView a:focus {
+  color: $accentColorVeryDark;
 }
 
 .notesList ul {
@@ -110,6 +133,16 @@
   cursor: pointer;
 }
 
+.liveIcon {
+  margin-right: 0.2rem;
+  padding-left: 0.2rem;
+  border-radius: 0.2rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: $textColor;
+  background: $accentColorVeryDark;
+}
+
 .note:hover, .note:focus {
   background: $fadedColorLight;
 }
@@ -121,4 +154,9 @@
 
 .selected .deleteNote {
   color: white;
+}
+
+.selected .liveIcon {
+  color: white;
+  background: $accentColorVeryDark;
 }

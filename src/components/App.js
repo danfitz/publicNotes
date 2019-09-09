@@ -6,8 +6,7 @@ import Blog from "./Blog.js";
 
 import {
   BrowserRouter as Router,
-  Route,
-  NavLink
+  Route
 } from "react-router-dom";
 
 import '../styles/App.scss';
@@ -193,11 +192,6 @@ class App extends Component {
 
               {this.renderAuth()}
 
-              {this.state.user ? 
-                <NavLink to={`/${this.state.user.uid}`}>View Your Public Notes</NavLink> :
-                ""
-              }
-
               <NotesList
                 currentNoteId={this.state.currentNoteId}
                 selectNote={this.selectNote}
@@ -209,7 +203,7 @@ class App extends Component {
 
           <main className={this.state.fullScreen ? "fullScreen" : ""}>
             <div className="wrapper">
-              <Route exact path="/:userId" render={ (props) => {
+              <Route exact path="/:node/:uid" render={ (props) => {
                 return (
                   <Blog {...props} />
                 );

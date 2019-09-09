@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase.js";
-import { AddCircleOutlined, HighlightOff } from "@material-ui/icons";
+import { NavLink } from "react-router-dom";
+import { AddCircleOutlined, HighlightOff, Public } from "@material-ui/icons";
 
 class NotesList extends Component {
   constructor(props) {
@@ -37,6 +38,16 @@ class NotesList extends Component {
     const date = new Date(timestamp);
     return `Created: ${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}, ${date.getHours()}:${date.getMinutes()}`;
   };
+
+  conditionalPublicRender = () => {
+    if (this.props.user) {
+      return (
+        <div className="toggleView">
+          <NavLink to={`/${this.props.user.node}/${this.props.user.uid}`}><Public /> Switch to Public View</NavLink>
+        </div>
+      );
+    };
+  };
   
   render() {
     return (
@@ -44,6 +55,7 @@ class NotesList extends Component {
         <div className="notesListHeader">
           <h2>List of Notes</h2>
           <AddCircleOutlined onClick={this.addNewNote} className="addNote" />
+          {this.conditionalPublicRender()}
         </div>
         <ul>
           {this.props.notes.map(note => {
@@ -58,9 +70,10 @@ class NotesList extends Component {
                     onClick={(event) => {
                       event.stopPropagation();
                       this.deleteNote(note.id);
-                    }} 
+                    }}
                   />
                   <h3 className="noteTitle">
+            { note.published ? <span className="liveIcon">Live: </span> : null }
                     { note.title ? note.title : "New Note" }
                   </h3>
                   <p className="noteText">

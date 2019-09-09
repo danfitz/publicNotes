@@ -85,7 +85,7 @@ class Editor extends Component {
     });
   };
 
-  handleChange = event => {
+  handleChange = change => {
     // Auto save feature: only save note when user stops typing
     // HOW IT WORKS: Clears a timeout every time the user types. The timeout only triggers this.saveNote() after 1 second of the user not typing.
     clearTimeout(this.timeoutId);
@@ -93,16 +93,22 @@ class Editor extends Component {
       this.saveNote();
     }, 1000);
 
-    // Stores value of title input in state
-    if (event.target) {
+    // Stores the value of Markdown text input in state
+    if (typeof change === "string") {
       this.setState({
-        [event.target.name]: event.target.value,
+        text: change,
         saved: false
       });
-    // Stores the value of Markdown text input in state
-    } else {
+    // Stores value of title input in state
+    } else if (change.target.name === "title") {
       this.setState({
-        text: event,
+        title: change.target.value,
+        saved: false
+      });
+    // Stores value of published input in state
+    } else if (change.target.name === "published") {
+      this.setState({
+        published: change.target.checked,
         saved: false
       });
     };
@@ -128,17 +134,17 @@ class Editor extends Component {
           { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : "Auto-saves when you stop writing" }
         </p>
 
-        <label htmlFor="publishInput">
-          Make note public
-        </label>
-        <input
-          className="publishInput"
-          id="publishInput"
-          type="checkbox"
-          name="published"
-          value={this.state.published}
-          onChange={this.handleChange}
-        />
+        <div className="publishContainer">
+          <input
+            className="publishInput"
+            id="publishInput"
+            type="checkbox"
+            name="published"
+            checked={ this.state.published ? "checked" : "" }
+            onChange={this.handleChange}
+          />
+          <label htmlFor="publishInput"> Make note public</label>
+        </div>
 
         <label htmlFor="textInput" className="visuallyHidden">
           Text input for text of note

@@ -12,7 +12,7 @@ class Blog extends Component {
   };
 
   componentDidMount() {
-    const userRef = firebase.database().ref(`users/${this.props.match.params.userId}`);
+    const userRef = firebase.database().ref(`${this.props.match.params.node}/${this.props.match.params.uid}`);
   
     userRef.on("value", (response) => {
       const data = response.val();
@@ -42,14 +42,14 @@ class Blog extends Component {
   render() {
     return (
       <section className="blogPosts">
-        {this.state.publishedNotes.map(post => {
+        {this.state.publishedNotes.length ? this.state.publishedNotes.map(post => {
           return (
             <article className="blogPost markdown-body" key={post.id}>
               <h2 className="postTitle">{post.title}</h2>
               <Markdown>{post.text}</Markdown>
             </article>
           );
-        })}
+        }) : <h2>NO PUBLIC NOTES</h2>}
       </section>
     );
   };
