@@ -3,6 +3,7 @@ import firebase from "../firebase.js";
 import Editor from "./Editor.js";
 import NotesList from "./NotesList.js";
 import Blog from "./Blog.js";
+import BlogList from "./BlogList.js";
 
 import {
   BrowserRouter as Router,
@@ -192,12 +193,21 @@ class App extends Component {
 
               {this.renderAuth()}
 
-              <NotesList
-                currentNoteId={this.state.currentNoteId}
-                selectNote={this.selectNote}
-                notes={this.state.notes}
-                user={this.state.user}
-              />
+
+              <Route exact path="/:node/:uid" render={ () => {
+                return <BlogList notes={this.state.notes} />;
+              }} />
+
+              <Route exact path="/" render={ () => {
+                return (
+                  <NotesList
+                    currentNoteId={this.state.currentNoteId}
+                    selectNote={this.selectNote}
+                    notes={this.state.notes}
+                    user={this.state.user}
+                  />
+                );
+              }} />
             </div>
           </header>
 
