@@ -66,6 +66,7 @@ class Editor extends Component {
       userRef
         .push({
           createdTimestamp: Date.now(),
+          published: true,
           ...noteObject
         })
         .then(newNote => {

@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import firebase from "../firebase.js";
 import Editor from "./Editor.js";
 import NotesList from "./NotesList.js";
+import Blog from "./Blog.js";
+
+import {
+  BrowserRouter as Router,
+  Route,
+  NavLink
+} from "react-router-dom";
+
 import '../styles/App.scss';
 import { Fullscreen, FullscreenExit } from "@material-ui/icons";
 import { Button } from "@material-ui/core";
@@ -80,6 +88,7 @@ class App extends Component {
           id: key,
           title: data[key].title,
           text: data[key].text,
+          published: data[key].published,
           createdTimestamp: data[key].createdTimestamp
         });
       };
@@ -97,7 +106,8 @@ class App extends Component {
   // NOTE: Gets passed to child components
   selectNote = (noteId) => {
     this.setState({
-      currentNoteId: noteId
+      currentNoteId: noteId,
+      // fullScreen: !this.state.fullScreen
     });
   };
 
@@ -142,7 +152,6 @@ class App extends Component {
             className="logout"
             variant="outlined"
             size="small"
-            color="#999"
             onClick={this.logout}
           >
             Log Out
@@ -157,7 +166,6 @@ class App extends Component {
               className="login"
               variant="outlined"
               size="small"
-              color="#4caf50"
               onClick={this.login}
             >
               Log In
@@ -170,37 +178,55 @@ class App extends Component {
 
   render() {
     return (
-      <div className="app">
-        <header className={this.state.fullScreen ? "collapsed" : ""}>
-          <div className="headerWrapper wrapper">
-            <h1>Public Notes</h1>
+      <Router>
+        <div className="app">
+          <header className={this.state.fullScreen ? "collapsed" : ""}>
+            <div className="headerWrapper wrapper">
+              <h1>Public Notes</h1>
 
-            {this.renderAuth()}
+              {this.renderAuth()}
 
-            <NotesList
-              currentNoteId={this.state.currentNoteId}
-              selectNote={this.selectNote}
-              notes={this.state.notes}
-              userNode={this.state.userNode}
-            />
-          </div>
-        </header>
+              {this.state.user ? 
+                <NavLink to={`/${this.state.user.uid}`}>Blog</NavLink> :
+                ""
+              }
+              <NavLink to="/">Notes</NavLink>
 
-        <main className={this.state.fullScreen ? "fullScreen" : ""}>
-          <div className="wrapper">
-            <Editor
-              currentNoteId={this.state.currentNoteId}
-              selectNote={this.selectNote}
-              userNode={this.state.userNode}
-            />
-          </div>
-        </main>
+              <NotesList
+                currentNoteId={this.state.currentNoteId}
+                selectNote={this.selectNote}
+                notes={this.state.notes}
+                userNode={this.state.userNode}
+              />
+            </div>
+          </header>
 
-        {this.state.fullScreen ?
-          <FullscreenExit className="fullScreenToggle" onClick={this.toggleFullScreen} /> :
-          <Fullscreen className="fullScreenToggle" onClick={this.toggleFullScreen} />
-        }
-      </div>
+          <main className={this.state.fullScreen ? "fullScreen" : ""}>
+            <div className="wrapper">
+              <Route path="/:userId" render={ (props) => {
+                return (
+                  <Blog {...props} />
+                );
+              }} />
+
+              <Route exact path="/" render={ () => {
+                return (
+                  <Editor
+                    currentNoteId={this.state.currentNoteId}
+                    selectNote={this.selectNote}
+                    userNode={this.state.userNode}
+                  />
+                );
+              }} />
+            </div>
+          </main>
+
+          {this.state.fullScreen ?
+            <FullscreenExit className="fullScreenToggle" onClick={this.toggleFullScreen} /> :
+            <Fullscreen className="fullScreenToggle" onClick={this.toggleFullScreen} />
+          }
+        </div>
+      </Router>
     );
   };
 };

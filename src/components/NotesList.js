@@ -14,6 +14,7 @@ class NotesList extends Component {
     userRef.push({
       title: "",
       text: "",
+      published: true,
       createdTimestamp: Date.now()
     }).then(newNote => {
       this.props.selectNote(newNote.key);
