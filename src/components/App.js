@@ -214,9 +214,7 @@ class App extends Component {
           <main className={this.state.fullScreen ? "fullScreen" : ""}>
             <div className="wrapper">
               <Route exact path="/:node/:uid" render={ (props) => {
-                return (
-                  <Blog {...props} />
-                );
+                return <Blog {...props} notes={this.state.notes} />;
               }} />
 
               <Route exact path="/" render={ () => {

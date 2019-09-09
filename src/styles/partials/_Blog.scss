@@ -9,5 +9,27 @@
 }
 
 .blogPost .postTitle {
+  padding-left: 0.8rem;
   font-size: 2rem;
+  position: relative;
+}
+
+.blogPost .postTitle::after {
+  content: "";
+  position: absolute;
+  // left: 0;
+  // bottom: 0.2rem;
+  // height: 0.5rem;
+  // width: 30%;
+  left: -1rem;
+  top: 0;
+  height: 100%;
+  width: 0.9rem;
+  // top: -1rem;
+  // left: -1rem;
+  // height: 0.9rem;
+  // width: 5rem;
+  // border-radius: 0.2rem;
+  background: adjust-color($accentColorDark, $alpha: -0.3);
+
 }

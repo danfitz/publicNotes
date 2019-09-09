@@ -5,7 +5,7 @@
 .authStatus {
   font-size: 0.8rem;
   color: $fadedColorVeryDark;
-  margin: 0.5rem 0;
+  margin: 0.5rem 0 0;
 }
 
 // Here I am overriding the colours of the Material UI buttons in .login and .logout
@@ -38,7 +38,7 @@
 }
 
 .notesListHeader h2 {
-  margin: 0;
+  margin: 0.5rem 0;
   font-size: 1rem;
   line-height: 1rem;
 }
@@ -110,12 +110,12 @@
 }
 
 .noteText {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   // color: #555;
 }
 
 .noteCreateDate {
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   font-style: italic;
   // color: #888;
 }
@@ -123,9 +123,9 @@
 .deleteNote {
   position: absolute;
   z-index: 10;
-  top: calc(50% - 0.55rem);
-  right: 0.25rem;
-  font-size: 1.1rem !important; // another Material UI style override
+  top: calc(50% - 0.6rem);
+  right: 0.3rem;
+  font-size: 1.2rem !important; // another Material UI style override
   color: $fadedColorVeryDark;
 }
 
@@ -139,7 +139,7 @@
   border-radius: 0.2rem;
   font-weight: 500;
   text-transform: uppercase;
-  color: $textColor;
+  color: white;
   background: $accentColorVeryDark;
 }
 
@@ -154,9 +154,4 @@
 
 .selected .deleteNote {
   color: white;
-}
-
-.selected .liveIcon {
-  color: white;
-  background: $accentColorVeryDark;
 }

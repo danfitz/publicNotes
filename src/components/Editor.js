@@ -15,6 +15,11 @@ class Editor extends Component {
     this.timeoutId = null;
   };
 
+  // Any time the editor is mounted, this makes sure that a note is never selected!
+  componentDidMount() {
+    this.props.selectNote(null);
+  };
+
   componentDidUpdate(prevProps, prevState) {
     // Conditional flow for changes in selected note
     if (this.props.currentNoteId !== prevProps.currentNoteId) {
@@ -156,7 +161,8 @@ class Editor extends Component {
           value={this.state.text}
           options={{
             placeholder: "Start writing...",
-            promptURLs: true
+            promptURLs: true,
+            hideIcons: ["side-by-side", "fullscreen"]
           }}
         />
       </section>
