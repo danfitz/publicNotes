@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import firebase from "../firebase.js";
-// import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 
@@ -45,22 +44,22 @@ class Editor extends Component {
     };
   };
 
-  // submitSave = event => {
-  //   event.preventDefault();
-  //   this.saveNote();
-  // };
-
+  // Method for conditionally updating notes in Firebase
   saveNote = () => {
     const noteObject = {
       title: this.state.title,
       text: this.state.text,
     };
 
+
+    // IF the note being saved is the current note selected,
+    // THEN save at that note's node in Firebase
     if (this.props.currentNoteId) {
       const noteRef = firebase.database().ref(`${this.props.userNode}/${this.props.currentNoteId}`);
-
       noteRef.update(noteObject);
 
+    // OTHERWISE the note is new,
+    // SO save the note at a new node in Firebase
     } else {
       const userRef = firebase.database().ref(this.props.userNode);
 
@@ -74,6 +73,7 @@ class Editor extends Component {
         });
     };
 
+    // Update state to reflect the fact that the note is saved
     this.setState({
       saved: true
     });
@@ -81,17 +81,19 @@ class Editor extends Component {
 
   handleChange = event => {
     // Auto save feature: only save note when user stops typing
+    // HOW IT WORKS: Clears a timeout every time the user types. The timeout only triggers this.saveNote() after 1 second of the user not typing.
     clearTimeout(this.timeoutId);
-
     this.timeoutId = setTimeout(() => {
       this.saveNote();
     }, 1000);
 
+    // Stores value of title input in state
     if (event.target) {
       this.setState({
         [event.target.name]: event.target.value,
         saved: false
       });
+    // Stores the value of Markdown text input in state
     } else {
       this.setState({
         text: event,
@@ -117,20 +119,12 @@ class Editor extends Component {
         />
 
         <p className="saveStatus">
-          { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : "Auto-saves when you stop writing..." }
+          { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : "Auto-saves when you stop writing" }
         </p>
 
         <label htmlFor="textInput" className="visuallyHidden">
           Text input for text of note
         </label>
-        {/* <TextareaAutosize
-          className="textInput"
-          id="textInput"
-          name="text"
-          placeholder="Start writing..."
-          value={this.state.text}
-          onChange={this.handleChange}
-        /> */}
         <SimpleMDE
           className="textInput"
           id="textInput"

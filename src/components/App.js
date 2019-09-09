@@ -22,6 +22,31 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // Auth state conditional logic
+    auth.onAuthStateChanged(async (user) => {
+      // IF there is a logged in authorized user,
+      // THEN sync to that user's node in Firebase
+      if (user) {
+        this.syncNotes(`users/${user.uid}`);
+
+        this.setState({
+          user,
+          userNode: `users/${user.uid}` 
+        });
+      // OTHERWISE the user is anonymous,
+      // SO create a new anonymous user node in Firebase
+      } else {
+        const anonymousUser = await firebase.database().ref("anonymous").push("");
+
+        this.syncNotes(`anonymous/${anonymousUser.key}`);
+
+        this.setState({
+          user: "anonymous",
+          userNode: `anonymous/${anonymousUser.key}`
+        });
+      };
+    });
+
     // EVENT LISTENER:
     // If user is anonymous, delete their unique record when they leave the site or refresh
     window.addEventListener('beforeunload', (event) => {
@@ -33,40 +58,16 @@ class App extends Component {
       //beforeunload needs to return something, so delete the return to work in chrome
       delete event['returnValue'];
     });
-
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        console.log("I'm changing to real user!");
-
-        this.syncNotes(`users/${user.uid}`);
-
-        this.setState({
-          user,
-          userNode: `users/${user.uid}` 
-        });
-      } else {
-        console.log("I'm changing to anonymous user!");
-        const anonymousUser = await firebase.database().ref("anonymous").push("");
-
-        this.syncNotes(`anonymous/${anonymousUser.key}`);
-
-        this.setState({
-          user: "anonymous",
-          userNode: `anonymous/${anonymousUser.key}`
-        });
-      };
-    });
   };
 
+  // Method to sync notes to given user node in Firebase
   syncNotes = (newUserNode) => {
-    console.log("I'm syncing to...", newUserNode);
-    console.log("and turning off...", this.state.userNode);
-    // Turn off previous event listener IF there was one before
+    // Turn off previous Firebase event listener IF there was one before
     if (this.state.userNode) {
       firebase.database().ref(this.state.userNode).off("value");
     };
 
-    // Start new event listener
+    // Start new Firebase event listener to constantly grab notes in database
     const userRef = firebase.database().ref(newUserNode);
     
     userRef.on("value", (response) => {
@@ -92,18 +93,23 @@ class App extends Component {
     });
   };
 
+  // Method that stores a selected note in state to be used when deleting or editing a note
+  // NOTE: Gets passed to child components
   selectNote = (noteId) => {
     this.setState({
       currentNoteId: noteId
     });
   };
 
+  // Method that toggles full screen state (and re-renders how page is displayed)
   toggleFullScreen = () => {
     this.setState({
       fullScreen: !this.state.fullScreen
     });
   };
 
+  // Method for logging in
+  // NOTE: This deletes the anonymous user that gets created automatically
   login = () => {
     auth.signInWithPopup(provider)
       .then((result) => {
@@ -117,6 +123,7 @@ class App extends Component {
       });
   };
 
+  // Method for logging out
   logout = () => {
     auth.signOut()
       .then(() => {
@@ -126,6 +133,7 @@ class App extends Component {
       });
   };
 
+  // Method for conditionally rendering login and logout on page
   renderAuth = () => {
     if (this.state.user !== "anonymous" && this.state.user !== null) {
       return (

@@ -7,6 +7,7 @@ class NotesList extends Component {
     super(props);
   };
 
+  // Method for adding a new note at the current user node
   addNewNote = () => {
     const userRef = firebase.database().ref(this.props.userNode);
 
@@ -19,6 +20,7 @@ class NotesList extends Component {
     });
   };
 
+  // Method for deleting a note at the current user node
   deleteNote = (noteId) => {
     if (window.confirm("This will delete your note permanently.")) {
       this.props.selectNote(null);
@@ -28,6 +30,7 @@ class NotesList extends Component {
     };
   };
 
+  // Method for converting timestamp to YYYY/M/D H:M datetime format
   convertToDate = (timestamp) => {
     const date = new Date(timestamp);
     return `Created: ${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}, ${date.getHours()}:${date.getMinutes()}`;
