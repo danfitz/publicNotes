@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase.js";
+import Markdown from "markdown-to-jsx";
+import "github-markdown-css/github-markdown.css";
 
 class Blog extends Component {
   constructor(props) {
@@ -42,9 +44,9 @@ class Blog extends Component {
       <section className="blogPosts">
         {this.state.publishedNotes.map(post => {
           return (
-            <article className="blogPost">
-              <h2>{post.title}</h2>
-              <p>{post.text}</p>
+            <article className="blogPost markdown-body" key={post.id}>
+              <h2 className="postTitle">{post.title}</h2>
+              <Markdown>{post.text}</Markdown>
             </article>
           );
         })}

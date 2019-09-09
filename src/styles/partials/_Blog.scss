@@ -1,0 +1,13 @@
+.blogPost {
+  padding: 1rem;
+  border: 0.08rem solid $fadedColorDark;
+  border-radius: 0.2rem;
+}
+
+.blogPost:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.blogPost .postTitle {
+  font-size: 2rem;
+}

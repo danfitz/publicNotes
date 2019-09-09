@@ -187,7 +187,7 @@ class App extends Component {
               {this.renderAuth()}
 
               {this.state.user ? 
-                <NavLink to={`/${this.state.user.uid}`}>Blog</NavLink> :
+                <NavLink to={`/blog/${this.state.user.uid}`}>Blog</NavLink> :
                 ""
               }
               <NavLink to="/">Notes</NavLink>
@@ -203,7 +203,7 @@ class App extends Component {
 
           <main className={this.state.fullScreen ? "fullScreen" : ""}>
             <div className="wrapper">
-              <Route path="/:userId" render={ (props) => {
+              <Route exact path="/blog/:userId" render={ (props) => {
                 return (
                   <Blog {...props} />
                 );
