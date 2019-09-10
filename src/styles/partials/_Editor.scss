@@ -9,9 +9,11 @@
 }
 
 .publishLink {
+  color: $accentColorVeryDark;
+}
+
+.publishLink:hover, .publishLink:focus, .publishLink:visited {
   color: $accentColorDark;
-  display: block;
-  margin: 0.5rem 0;
 }
 
 .saved {

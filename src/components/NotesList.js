@@ -43,7 +43,7 @@ class NotesList extends Component {
     if (this.props.user) {
       return (
         <div className="toggleView">
-          <NavLink to={`/${this.props.user.node}/${this.props.user.uid}`}><Public /> Switch to Public View</NavLink>
+          <NavLink to={`/${this.props.user.node}/${this.props.user.uid}`}><Public /> View My Public Feed</NavLink>
         </div>
       );
     };
@@ -76,7 +76,7 @@ class NotesList extends Component {
                     }}
                   />
                   <h3 className="noteTitle">
-            { note.published ? <span className="liveIcon">Live: </span> : null }
+                    { note.published ? <span className="liveIcon">Live: </span> : null }
                     { note.title ? note.title : "New Note" }
                   </h3>
                   <p className="noteText">

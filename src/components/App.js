@@ -175,7 +175,7 @@ class App extends Component {
             >
               Log In
             </Button>
-            <p className="authStatus">This is a testing environment. Log in for the full experience.</p>
+            <p className="authStatus">Anonymous user. All notes created here are deleted when you leave. Log in to start saving notes.</p>
           </div>
         );
     };
@@ -233,10 +233,10 @@ class App extends Component {
               }} />
 
               <Route path="/:node/:uid" render={ (params) => {
-                const uid = this.state.user ? params.match.params.uid : "N/A";
+                const userUrl = `${window.location.origin}/${params.match.params.node}/${params.match.params.uid}`;
                 return (
                   <section className="publicFeedIntro">
-                    <h2>Public Feed of User: <span className="uid">{uid}</span></h2>
+                    <h2>Public Feed of User: <a className="feedLink" href={userUrl}>{params.match.params.uid}</a></h2>
                     <p>To view a note, select any of this user's notes in the sidebar!</p>
                   </section>
                 );

@@ -10,11 +10,12 @@
   color : $fadedColorVeryDark;
 }
 
-.uid {
-  color: white;
-  background: $accentColorVeryDark;
-  padding: 0 0.2rem;
-  border-radius: 0.2rem;
+.feedLink {
+  color: $accentColorVeryDark;
+}
+
+.feedLink:hover, .feedLink:focus, .feedLink:visited {
+  color: $accentColorDark;
 }
 
 .blogPost {

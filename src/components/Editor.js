@@ -8,7 +8,7 @@ class Editor extends Component {
     super(props);
     this.state = {
       title: "Welcome to Public Notes!",
-      text: "Public Notes is a [Markdown](https://www.markdownguide.org/basic-syntax/) notetaking app with the ability to share notes publicly.\n\n### Instructions\n\nClick **make note public**, and a live link will be generated, which you can *share with anyone*.\n\nEvery user has a unique page displaying all their public notes too. Just click **Switch to public view** in the sidebar to see yours.\n\n![Start writing!](https://media.giphy.com/media/KyGiMJokZEQvu/giphy.gif)",
+      text: "*Pro tip: Click the **eye** icon above for a full preview.*\n\nPublic Notes is a [Markdown](https://www.markdownguide.org/basic-syntax/) notetaking app with the ability to share notes publicly.\n\n### Instructions\n\nClick **Make Note Public** above, and a live link will be generated, which you can *share with anyone*.\n\nEvery user has a unique page displaying all their public notes too. Just click **View My Public Feed** in the sidebar to see yours.\n\n![Start writing!](https://media.giphy.com/media/KyGiMJokZEQvu/giphy.gif)", // starting instructions!
       saved: false,
       published: false
     };
@@ -131,13 +131,12 @@ class Editor extends Component {
           type="text"
           name="title"
           placeholder="New Note"
-          initialValue=""
           value={this.state.title}
           onChange={this.handleChange}
         />
 
         <p className="saveStatus">
-          { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : "Unsaved" }
+          { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : "Auto-saves when you stop writing" }
         </p>
 
         <div className="publishContainer">
@@ -149,7 +148,11 @@ class Editor extends Component {
             checked={ this.state.published ? "checked" : "" }
             onChange={this.handleChange}
           />
-          <label htmlFor="publishInput"> Make note public</label>
+          <label htmlFor="publishInput"> Make Note Public </label>
+          {this.state.published && this.state.saved ?
+            <a className="publishLink" href={`${window.location.origin}/${this.props.user.node}/${this.props.user.uid}/${this.props.currentNoteId}`} target="_blank" rel="noopener noreferrer">Live Link</a> :
+            null
+          }
         </div>
 
         <label htmlFor="textInput" className="visuallyHidden">Text input for note</label>

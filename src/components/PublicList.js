@@ -57,7 +57,7 @@ class PublicList extends Component {
   conditionalPrivateRender = () => {
     return (
       <div className="toggleView">
-        <NavLink to="/"><Notes /> Switch to My Notes</NavLink>
+        <NavLink to="/"><Notes /> View All My Notes</NavLink>
       </div>
     );
   };

@@ -83,6 +83,15 @@
   overflow-y: auto;
 }
 
+.selected {
+  background: $accentColorDark !important; // another Material UI style override
+  color: white;
+}
+
+.selected .deleteNote {
+  color: white;
+}
+
 .note {
   padding: 0.3rem 0.35rem;
   margin: 0.05rem 0;
@@ -142,8 +151,9 @@
   color: $fadedColorVeryDark;
 }
 
-.deleteNote:hover {
+.deleteNote:hover, .deleteNote:focus {
   cursor: pointer;
+  color: red;
 }
 
 .liveIcon {
@@ -154,13 +164,4 @@
   text-transform: uppercase;
   color: white;
   background: $accentColorVeryDark;
-}
-
-.selected {
-  background: $accentColorDark !important; // another Material UI style override
-  color: white;
-}
-
-.selected .deleteNote {
-  color: white;
 }
