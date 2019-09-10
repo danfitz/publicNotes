@@ -187,7 +187,7 @@ class App extends Component {
         <div className="app">
           <header className={this.state.fullScreen ? "collapsed" : ""}>
             <div className="headerWrapper wrapper">
-              <h1>Public Notes</h1>
+              <h1><a href="/">Public Notes</a></h1>
 
               {this.renderAuth()}
 

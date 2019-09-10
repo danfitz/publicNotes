@@ -10,7 +10,7 @@ class Editor extends Component {
     this.state = {
       // Starting instructions on mount!
       title: "Welcome to Public Notes!",
-      text: `Public Notes is a [Markdown](https://www.markdownguide.org/basic-syntax/) notetaking app with the ability to share notes publicly.\n\n*Pro tip: Click the __eye__ icon 👁️ above for a full preview.*\n\n### Instructions\n\nClick **Make Note Public** 🚀 above, and a live link will be generated, which you can *share with anyone* 👪.\n\nEvery user has a [unique page](${window.location.origin}/${this.props.user.node}/${this.props.user.uid}) displaying all their public notes too. Just click 🌎 **View My Public Feed** in the sidebar to see yours.\n\n![Start writing!](https://media.giphy.com/media/KyGiMJokZEQvu/giphy.gif)`,
+      text: "Public Notes is a [Markdown](https://www.markdownguide.org/basic-syntax/) notetaking app with the ability to share notes publicly.\n\n*Pro tip: Click the __eye__ icon 👁️ above for a full preview.*\n\n![Start writing!](https://media.giphy.com/media/KyGiMJokZEQvu/giphy.gif)\n\n### Instructions\n\nClick **Make Note Public** 🚀 above, and a live link will be generated, which you can *share with anyone* 👪.\n\nEvery user has a [unique page]("+window.location.origin+"/"+this.props.user.node+"/"+this.props.user.uid+") displaying all their public notes too. Just click 🌎 **View My Public Feed** in the sidebar to see yours.\n\n### For Coders\n\n```js\n// You can even write code snippets!\nclass App extends Component {\n\trender() {\n\t\treturn <h1>I'm a React component!</h1>;\n\t}\n}\n```",
       saved: false,
       published: false
     };
@@ -100,7 +100,7 @@ class Editor extends Component {
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(() => {
       this.saveNote();
-    }, 1000);
+    }, 800);
 
     // Stores the value of Markdown text input in state
     if (typeof change === "string") {

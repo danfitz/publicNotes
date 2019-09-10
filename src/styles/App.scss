@@ -57,6 +57,16 @@ h1 {
   line-height: 3rem;
 }
 
+h1 a, h1 a:visited {
+  text-decoration: none;
+  color: $textColor;
+}
+
+h1 a:hover, h1 a:focus {
+  outline: 0;
+  color: $accentColorVeryDark;
+}
+
 // Main
 main {
   display: flex;
