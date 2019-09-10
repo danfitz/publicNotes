@@ -11,10 +11,13 @@ class PublicList extends Component {
     };
   };
 
+  // Get notes upon mount
   componentDidMount() {
+    this.props.selectNote(null); // clears note selection upon mount!
     this.getNotes();
   };
 
+  // Get notes provided a new user was selected
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.uid !== this.props.match.params.uid) {
       this.getNotes();
@@ -76,7 +79,6 @@ class PublicList extends Component {
                   <article
                     tabIndex="0"
                     className={`note ${this.props.currentNoteId === note.id ? "selected" : ""}`}
-                    onClick={() => this.props.selectNote(note.id)}
                   >
                     <h3 className="noteTitle">
                       { note.title ? note.title : "New Note" }

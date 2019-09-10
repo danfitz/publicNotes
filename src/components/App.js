@@ -210,8 +210,8 @@ class App extends Component {
                 return (
                   <PublicList
                     {...params}
-                    currentNoteId={this.state.currentNoteId}
-                    selectNote={this.selectNote}
+                    currentNoteId={this.state.currentNoteId} // used for "selectted" class
+                    selectNote={this.selectNote} // used to clear note on mount
                   />
                 );
               }} />
@@ -249,7 +249,11 @@ class App extends Component {
               }} />
 
               {/* This Route renders a Public Post component based on URL */}
-              <Route exact path="/:node/:uid/:noteId" render={params => <PublicPost {...params} />} />
+              <Route exact path="/:node/:uid/:noteId" render={params => {
+                return (
+                  <PublicPost{...params} selectNote={this.selectNote} />
+                );
+              }} />
             </div>
           </main>
 

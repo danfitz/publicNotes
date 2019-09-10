@@ -31,8 +31,9 @@ class PublicPost extends Component {
     noteRef.once("value", response => {
       const data = response.val();
 
-      // ONLY store note into state IF it's been published
-      if (data.published) {
+      // ONLY store note into state IF it exists and it's been published
+      if (data && data.published) {
+        this.props.selectNote(this.props.match.params.noteId); // NEEDS COMMENTING
         this.setState({
           post: data
         });
