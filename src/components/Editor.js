@@ -133,7 +133,7 @@ class Editor extends Component {
           id="titleInput"
           type="text"
           name="title"
-          placeholder="New Note"
+          placeholder="Note Title"
           value={this.state.title}
           onChange={this.handleChange}
         />

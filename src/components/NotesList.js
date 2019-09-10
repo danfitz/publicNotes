@@ -75,11 +75,11 @@ class NotesList extends Component {
                     {/* Renders live tag conditionally */}
                     { note.published ? <span className="liveIcon">Live: </span> : null }
                     {/* Renders "New Note" title if title empty */}
-                    { note.title ? note.title : "New Note" }
+                    { note.title ? note.title : "Untitled Note" }
                   </h3>
                   <p className="noteText">
                     {/* Note text is only first 20 characters if text not empty */}
-                    { note.text ? note.text.trim().substring(0, 20) + (note.text.trim().length > 20 ? "..." : "") : "Empty Note" }
+                    { note.text ? note.text.trim().substring(0, 30) + (note.text.trim().length > 30 ? "..." : "") : "Empty Text" }
                   </p>
                   <p className="noteCreateDate">{ this.convertToDate(note.createdTimestamp) }</p>
                 </article>
