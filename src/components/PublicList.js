@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import firebase from "../firebase.js";
+import Moment from "react-moment";
 import { Notes } from "@material-ui/icons";
 
 class PublicList extends Component {
@@ -83,7 +84,7 @@ class PublicList extends Component {
                     <h3 className="noteTitle">
                       { note.title ? note.title : "New Note" }
                     </h3>
-                    <p className="noteCreateDate">{ "Published: " + this.convertToDate(note.createdTimestamp) }</p>
+                    <p className="noteCreateDate">Created: <Moment interval={0} date={note.createdTimestamp} format="MMMM D, YYYY" /></p>
                   </article>
                 </NavLink>
                 </li>

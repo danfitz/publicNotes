@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase.js";
 import { NavLink } from "react-router-dom";
+import Moment from "react-moment";
 import { AddCircleOutlined, HighlightOff, Public } from "@material-ui/icons";
 
 class NotesList extends Component {
@@ -81,7 +82,7 @@ class NotesList extends Component {
                     {/* Note text is only first 20 characters if text not empty */}
                     { note.text ? note.text.trim().substring(0, 30) + (note.text.trim().length > 30 ? "..." : "") : "Empty Text" }
                   </p>
-                  <p className="noteCreateDate">{ this.convertToDate(note.createdTimestamp) }</p>
+                  <p className="noteCreateDate">Created: <Moment interval={0} date={note.createdTimestamp} format="MMMM D, YYYY h:mm A" /></p>
                 </article>
               </li>
             );

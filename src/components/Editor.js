@@ -10,7 +10,7 @@ class Editor extends Component {
     this.state = {
       // Starting instructions on mount!
       title: "Welcome to Public Notes!",
-      text: "*Pro tip: Click the __eye__ icon above for a full preview.*\n\nPublic Notes is a [Markdown](https://www.markdownguide.org/basic-syntax/) notetaking app with the ability to share notes publicly.\n\n### Instructions\n\nClick **Make Note Public** above, and a live link will be generated, which you can *share with anyone*.\n\nEvery user has a unique page displaying all their public notes too. Just click **View My Public Feed** in the sidebar to see yours.\n\n![Start writing!](https://media.giphy.com/media/KyGiMJokZEQvu/giphy.gif)",
+      text: `Public Notes is a [Markdown](https://www.markdownguide.org/basic-syntax/) notetaking app with the ability to share notes publicly.\n\n*Pro tip: Click the __eye__ icon 👁️ above for a full preview.*\n\n### Instructions\n\nClick **Make Note Public** 🚀 above, and a live link will be generated, which you can *share with anyone* 👪.\n\nEvery user has a [unique page](${window.location.origin}/${this.props.user.node}/${this.props.user.uid}) displaying all their public notes too. Just click 🌎 **View My Public Feed** in the sidebar to see yours.\n\n![Start writing!](https://media.giphy.com/media/KyGiMJokZEQvu/giphy.gif)`,
       saved: false,
       published: false
     };
