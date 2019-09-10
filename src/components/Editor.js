@@ -1,31 +1,26 @@
 import React, { Component } from "react";
 import firebase from "../firebase.js";
-import SimpleMDE from "react-simplemde-editor";
+import SimpleMDEReact from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 
 class Editor extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: "",
-      text: "",
+      title: "Welcome to Public Notes!",
+      text: "Public Notes is a [Markdown](https://www.markdownguide.org/basic-syntax/) notetaking app with the ability to share notes publicly.\n\n### Instructions\n\nClick **make note public**, and a live link will be generated, which you can *share with anyone*.\n\nEvery user has a unique page displaying all their public notes too. Just click **Switch to public view** in the sidebar to see yours.\n\n![Start writing!](https://media.giphy.com/media/KyGiMJokZEQvu/giphy.gif)",
       saved: false,
       published: false
     };
     this.timeoutId = null;
   };
 
-  // Any time the editor is mounted, this makes sure that a note is never selected!
   componentDidMount() {
+    // When component first mounts, this ensures no note is ever selected!
     this.props.selectNote(null);
-
-    this.setState({
-      title: "Welcome to Public Notes",
-      text: "## How it Works\n1. Create a new note.\n2. Write note using [Markdown](https://www.markdownguide.org/basic-syntax/). (Guide is in the \"?\" icon above.)\n3. If you want a note to go **public**, checkmark \"Make note public\" above.\n4. A URL will appear. You can share it with anyone!\n![Public Notes GIF](https://gph.is/1sCgsZP)"
-    });
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     // Conditional flow for changes in selected note
     if (this.props.currentNoteId !== prevProps.currentNoteId) {
       // IF user selects a new existing note...
@@ -136,12 +131,13 @@ class Editor extends Component {
           type="text"
           name="title"
           placeholder="New Note"
+          initialValue=""
           value={this.state.title}
           onChange={this.handleChange}
         />
 
         <p className="saveStatus">
-          { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : "Auto-saves when you stop writing" }
+          { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : "Unsaved" }
         </p>
 
         <div className="publishContainer">
@@ -156,10 +152,11 @@ class Editor extends Component {
           <label htmlFor="publishInput"> Make note public</label>
         </div>
 
-        <label htmlFor="textInput" className="visuallyHidden">
-          Text input for text of note
-        </label>
-        <SimpleMDE
+        <label htmlFor="textInput" className="visuallyHidden">Text input for note</label>
+        <SimpleMDEReact
+          // "key" forces a re-mount when new note selected, fixing a bug with SimpleMDEReact
+          // where moving between notes doesn't update the text on screen
+          key={this.props.currentNoteId} 
           className="textInput"
           id="textInput"
           onChange={this.handleChange}

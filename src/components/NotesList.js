@@ -54,7 +54,7 @@ class NotesList extends Component {
       <section className="notesList">
         <div className="notesListHeader">
           <h2>List of Notes</h2>
-          <AddCircleOutlined onClick={this.addNewNote} className="addNote" aria-label="Add new note" />
+          <AddCircleOutlined onClick={this.addNewNote} className="addNote" aria-label="Add new note" tabIndex="0" />
           {this.conditionalPublicRender()}
         </div>
         <ul tabIndex="-1">
@@ -68,6 +68,7 @@ class NotesList extends Component {
                 >
                   <HighlightOff
                     aria-label="Delete note"
+                    tabIndex="0"
                     className="deleteNote"
                     onClick={(event) => {
                       event.stopPropagation();

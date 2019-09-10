@@ -192,14 +192,18 @@ class App extends Component {
               {this.renderAuth()}
 
               <Route exact path="/" render={ () => {
-                return (
-                  <NotesList
-                  currentNoteId={this.state.currentNoteId}
-                  selectNote={this.selectNote}
-                  notes={this.state.notes}
-                  user={this.state.user}
-                  />
-                );
+                if (this.state.user) {
+                  return (
+                    <NotesList
+                    currentNoteId={this.state.currentNoteId}
+                    selectNote={this.selectNote}
+                    notes={this.state.notes}
+                    user={this.state.user}
+                    />
+                  );
+                } else {
+                  return <p>Loading...</p>;
+                };
               }} />
 
               <Route path="/:node/:uid" render={ (params) => {
@@ -215,13 +219,17 @@ class App extends Component {
           <main className={this.state.fullScreen ? "fullScreen" : ""}>
             <div className="wrapper">
               <Route exact path="/" render={ () => {
-                return (
-                  <Editor
-                    currentNoteId={this.state.currentNoteId}
-                    selectNote={this.selectNote}
-                    user={this.state.user}
-                  />
-                );
+                if (this.state.user) {
+                  return (
+                    <Editor
+                      currentNoteId={this.state.currentNoteId}
+                      selectNote={this.selectNote}
+                      user={this.state.user}
+                    />
+                  );
+                } else {
+                  return <p>Loading...</p>;
+                };
               }} />
 
               <Route path="/:node/:uid" render={ (params) => {

@@ -8,8 +8,10 @@
   margin-bottom: 0;
 }
 
-input[type="checkbox"]:focus {
-  outline: 0;
+.publishLink {
+  color: $accentColorDark;
+  display: block;
+  margin: 0.5rem 0;
 }
 
 .saved {
