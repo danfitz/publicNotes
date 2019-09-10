@@ -68,10 +68,15 @@ class PublicList extends Component {
           {this.state.notes.filter(note => note.published).map(note => {
             return (
               <li key={note.id}>
-                <NavLink to={`/${this.props.match.params.node}/${this.props.match.params.uid}/${note.id}`} className="noteLink" tabIndex="-1">
+                <NavLink
+                  tabIndex="-1"
+                  to={`/${this.props.match.params.node}/${this.props.match.params.uid}/${note.id}`}
+                  className="noteLink"
+                >
                   <article
                     tabIndex="0"
-                    className="note"
+                    className={`note ${this.props.currentNoteId === note.id ? "selected" : ""}`}
+                    onClick={() => this.props.selectNote(note.id)}
                   >
                     <h3 className="noteTitle">
                       { note.title ? note.title : "New Note" }

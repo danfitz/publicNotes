@@ -206,7 +206,15 @@ class App extends Component {
                   return <p>...</p>;
                 };
               }} />
-              <Route path="/:node/:uid" render={params => <PublicList {...params} />} />
+              <Route path="/:node/:uid" render={params => {
+                return (
+                  <PublicList
+                    {...params}
+                    currentNoteId={this.state.currentNoteId}
+                    selectNote={this.selectNote}
+                  />
+                );
+              }} />
 
             </div>
           </header>
