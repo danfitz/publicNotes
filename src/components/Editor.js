@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import firebase from "../firebase.js";
+// Markdown editor component
 import SimpleMDEReact from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 

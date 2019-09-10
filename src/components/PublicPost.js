@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import firebase from "../firebase.js";
-import Markdown from "markdown-to-jsx";
-import "github-markdown-css/github-markdown.css";
+import Markdown from "markdown-to-jsx"; // converts markdown to JSX
+import "github-markdown-css/github-markdown.css"; // markdown styling
 
 class PublicPost extends Component {
   constructor(props) {
