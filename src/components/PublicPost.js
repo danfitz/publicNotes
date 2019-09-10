@@ -3,7 +3,7 @@ import firebase from "../firebase.js";
 import Markdown from "markdown-to-jsx";
 import "github-markdown-css/github-markdown.css";
 
-class BlogPost extends Component {
+class PublicPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -11,16 +11,19 @@ class BlogPost extends Component {
     };
   };
 
+  // Get note upon mount
   componentDidMount() {
     this.getNote();
   };
 
+  // Get note provided a new note was selected
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.noteId !== this.props.match.params.noteId) {
       this.getNote();
     };
   };
 
+  // Method for getting note data from Firebase (based on params)
   getNote = () => {
     const noteNode = `${this.props.match.params.node}/${this.props.match.params.uid}/${this.props.match.params.noteId}`;
     const noteRef = firebase.database().ref(noteNode);
@@ -28,16 +31,20 @@ class BlogPost extends Component {
     noteRef.once("value", response => {
       const data = response.val();
 
-      this.setState({
-        post: data
-      });
+      // ONLY store note into state IF it's been published
+      if (data.published) {
+        this.setState({
+          post: data
+        });
+      };
     });
   };
 
+  // Conditionally render post IF post data was successfully added to state
   conditionalRender() {
     if (this.state.post) {
       return (
-        <article className="blogPost markdown-body" >
+        <article className="publicPost markdown-body" >
           <h2 className="postTitle">{this.state.post.title}</h2>
           <Markdown>{this.state.post.text}</Markdown>
         </article>
@@ -50,4 +57,4 @@ class BlogPost extends Component {
   render = () => this.conditionalRender();
 };
 
-export default BlogPost;
+export default PublicPost;

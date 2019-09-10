@@ -54,23 +54,16 @@ class PublicList extends Component {
     return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}, ${date.getHours()}:${date.getMinutes()}`;
   };
 
-  conditionalPrivateRender = () => {
-    return (
-      <div className="toggleView">
-        <NavLink to="/"><Notes /> View All My Notes</NavLink>
-      </div>
-    );
-  };
-  
   render() {
-
-
     return (
       <section className="notesList">
         <div className="notesListHeader">
           <h2>Public Feed</h2>
-          {this.conditionalPrivateRender()}
+          <div className="toggleView">
+            <NavLink to="/"><Notes /> View All My Notes</NavLink>
+          </div>
         </div>
+        
         <ul>
           {this.state.notes.filter(note => note.published).map(note => {
             return (
@@ -78,7 +71,7 @@ class PublicList extends Component {
                 <NavLink to={`/${this.props.match.params.node}/${this.props.match.params.uid}/${note.id}`} className="noteLink" tabIndex="-1">
                   <article
                     tabIndex="0"
-                    className={`note ${this.props.currentNoteId === note.id ? "selected" : ""}`}
+                    className="note"
                   >
                     <h3 className="noteTitle">
                       { note.title ? note.title : "New Note" }

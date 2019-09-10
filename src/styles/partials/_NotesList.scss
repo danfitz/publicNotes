@@ -1,5 +1,8 @@
 // NOTE: This styles both the NotesList AND PublicList components!
+// These component appear in the sidebar!
 
+
+// Styling for log in and log out section of sidebar
 .authContainer {
   margin-bottom: 0.5rem;
 }
@@ -22,11 +25,14 @@
   border: 0.05rem solid $fadedColorVeryDark !important;
 }
 
+// Styling for list of notes in sidebar
 .notesList {
+  // These styles override the wrapper
   width: 110%;
   position: relative;
   left: -5%;
-  flex: 1 1 auto;
+
+  flex: 1 1 auto; // flex automatically shrinks and grows the list to fit the remaining space!
   overflow-y: hidden;
   display: flex;
   flex-direction: column;
@@ -63,7 +69,7 @@
     outline: 0;
     text-decoration: none;
     color: $accentColorDark;
-    font-size: 0.7rem !important;
+    font-size: 0.7rem !important; // overriding Material UI again...
     display: flex;
     align-items: center;
   }
@@ -79,8 +85,8 @@
 
 .notesList ul {
   border-radius: 0.2rem;
-  flex: 1 1 auto;
-  overflow-y: auto;
+  flex: 1 1 auto; // flex automatically shrinks and grows the list to fit the remaining space!
+  overflow-y: auto; // conditionally display scrollbar
 }
 
 .selected {
@@ -104,7 +110,6 @@
 .note:hover, .note:focus {
   outline: 0;
   background: $fadedColorLight;
-  border: none;
 }
 
 .noteLink {

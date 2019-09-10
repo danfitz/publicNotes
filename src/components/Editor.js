@@ -7,11 +7,13 @@ class Editor extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      // Starting instructions on mount!
       title: "Welcome to Public Notes!",
-      text: "*Pro tip: Click the **eye** icon above for a full preview.*\n\nPublic Notes is a [Markdown](https://www.markdownguide.org/basic-syntax/) notetaking app with the ability to share notes publicly.\n\n### Instructions\n\nClick **Make Note Public** above, and a live link will be generated, which you can *share with anyone*.\n\nEvery user has a unique page displaying all their public notes too. Just click **View My Public Feed** in the sidebar to see yours.\n\n![Start writing!](https://media.giphy.com/media/KyGiMJokZEQvu/giphy.gif)", // starting instructions!
+      text: "*Pro tip: Click the __eye__ icon above for a full preview.*\n\nPublic Notes is a [Markdown](https://www.markdownguide.org/basic-syntax/) notetaking app with the ability to share notes publicly.\n\n### Instructions\n\nClick **Make Note Public** above, and a live link will be generated, which you can *share with anyone*.\n\nEvery user has a unique page displaying all their public notes too. Just click **View My Public Feed** in the sidebar to see yours.\n\n![Start writing!](https://media.giphy.com/media/KyGiMJokZEQvu/giphy.gif)",
       saved: false,
       published: false
     };
+    // Stores timeoutId of setTimeout used below...
     this.timeoutId = null;
   };
 
@@ -20,10 +22,11 @@ class Editor extends Component {
     this.props.selectNote(null);
   };
 
+  // This lifecycle method handles the conditional flow when notes are selected or deleted
   componentDidUpdate(prevProps) {
-    // Conditional flow for changes in selected note
+    // Assuming that there was a new note selected...
     if (this.props.currentNoteId !== prevProps.currentNoteId) {
-      // IF user selects a new existing note...
+      // IF user selects a new EXISTING note...
       // THEN obtain the Firebase data and update state
       if (this.props.currentNoteId) {
         const noteNode = `${this.props.user.node}/${this.props.user.uid}/${this.props.currentNoteId}`;
@@ -42,7 +45,7 @@ class Editor extends Component {
         });
 
       // OTHERWISE the selected note was cleared (updated to null)...
-      // SO clear state
+      // SO clear editor
       } else {
         this.setState({
             title: "",
@@ -54,7 +57,7 @@ class Editor extends Component {
     };
   };
 
-  // Method for conditionally updating notes in Firebase
+  // Method for conditionally updating note in Firebase
   saveNote = () => {
     const noteObject = {
       title: this.state.title,
@@ -76,15 +79,15 @@ class Editor extends Component {
 
       userRef
         .push({
-          createdTimestamp: Date.now(),
+          createdTimestamp: Date.now(), // timestamp!
           ...noteObject
         })
         .then(newNote => {
-            this.props.selectNote(newNote.key);
+            this.props.selectNote(newNote.key); // selects new note!
         });
     };
 
-    // Update state to reflect the fact that the note is saved
+    // Update state to reflect the fact that the note is saved in Firebase
     this.setState({
       saved: true
     });
@@ -136,6 +139,7 @@ class Editor extends Component {
         />
 
         <p className="saveStatus">
+          {/* Conditional render save status */}
           { this.state.saved && this.props.currentNoteId ? <span className="saved">Saved</span> : "Auto-saves when you stop writing" }
         </p>
 
@@ -149,13 +153,18 @@ class Editor extends Component {
             onChange={this.handleChange}
           />
           <label htmlFor="publishInput"> Make Note Public </label>
+
+          {/* Conditional render of published link */}
           {this.state.published && this.state.saved ?
             <a className="publishLink" href={`${window.location.origin}/${this.props.user.node}/${this.props.user.uid}/${this.props.currentNoteId}`} target="_blank" rel="noopener noreferrer">Live Link</a> :
             null
           }
         </div>
 
+        {/* Currently, the label below doesn't link to the SimpleMDEReact component */}
+        {/* I'll have to revisit this later */}
         <label htmlFor="textInput" className="visuallyHidden">Text input for note</label>
+        
         <SimpleMDEReact
           // "key" forces a re-mount when new note selected, fixing a bug with SimpleMDEReact
           // where moving between notes doesn't update the text on screen

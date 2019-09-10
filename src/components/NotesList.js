@@ -16,16 +16,16 @@ class NotesList extends Component {
       title: "",
       text: "",
       published: false,
-      createdTimestamp: Date.now()
+      createdTimestamp: Date.now() // timestamp!
     }).then(newNote => {
-      this.props.selectNote(newNote.key);
+      this.props.selectNote(newNote.key); // selecting new note!
     });
   };
 
   // Method for deleting a note at the current user node
   deleteNote = (noteId) => {
     if (window.confirm("This will delete your note permanently.")) {
-      this.props.selectNote(null);
+      this.props.selectNote(null); // deselects note
       
       const noteNode = `${this.props.user.node}/${this.props.user.uid}/${noteId}`;
       const noteRef = firebase.database().ref(noteNode);
@@ -39,15 +39,7 @@ class NotesList extends Component {
     return `Created: ${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}, ${date.getHours()}:${date.getMinutes()}`;
   };
 
-  conditionalPublicRender = () => {
-    if (this.props.user) {
-      return (
-        <div className="toggleView">
-          <NavLink to={`/${this.props.user.node}/${this.props.user.uid}`}><Public /> View My Public Feed</NavLink>
-        </div>
-      );
-    };
-  };
+        
   
   render() {
     return (
@@ -55,14 +47,18 @@ class NotesList extends Component {
         <div className="notesListHeader">
           <h2>List of Notes</h2>
           <AddCircleOutlined onClick={this.addNewNote} className="addNote" aria-label="Add new note" tabIndex="0" />
-          {this.conditionalPublicRender()}
+          <div className="toggleView">
+            <NavLink to={`/${this.props.user.node}/${this.props.user.uid}`}><Public /> View My Public Feed</NavLink>
+          </div>
         </div>
+        
         <ul tabIndex="-1">
           {this.props.notes.map(note => {
             return (
               <li key={note.id}>
                 <article
                   tabIndex="0"
+                  // Conditional rendering of selected class IF note is currently selected
                   className={`note ${this.props.currentNoteId === note.id ? "selected" : ""}`}
                   onClick={() => this.props.selectNote(note.id)}
                 >
@@ -76,11 +72,14 @@ class NotesList extends Component {
                     }}
                   />
                   <h3 className="noteTitle">
+                    {/* Renders live tag conditionally */}
                     { note.published ? <span className="liveIcon">Live: </span> : null }
+                    {/* Renders "New Note" title if title empty */}
                     { note.title ? note.title : "New Note" }
                   </h3>
                   <p className="noteText">
-                    { note.text ? note.text.substring(0, 20).trim() + (note.text.trim().length > 20 ? "..." : "") : "Empty Note" }
+                    {/* Note text is only first 20 characters if text not empty */}
+                    { note.text ? note.text.trim().substring(0, 20) + (note.text.trim().length > 20 ? "..." : "") : "Empty Note" }
                   </p>
                   <p className="noteCreateDate">{ this.convertToDate(note.createdTimestamp) }</p>
                 </article>

@@ -1,19 +1,23 @@
+// Tool imports
 import React, { Component } from 'react';
 import firebase from "../firebase.js";
-import Editor from "./Editor.js";
-import NotesList from "./NotesList.js";
-import BlogPost from "./BlogPost.js";
-import PublicList from "./PublicList.js";
-
 import {
   BrowserRouter as Router,
   Route
 } from "react-router-dom";
 
+// My component imports
+import Editor from "./Editor.js";
+import NotesList from "./NotesList.js";
+import PublicPost from "./PublicPost.js";
+import PublicList from "./PublicList.js";
+
+// Style imports
 import '../styles/App.scss';
 import { Fullscreen, FullscreenExit } from "@material-ui/icons";
 import { Button } from "@material-ui/core";
 
+// Firebase auth
 const provider = new firebase.auth.GoogleAuthProvider();
 const auth = firebase.auth();
 
@@ -46,7 +50,7 @@ class App extends Component {
       } else {
         const anonymousUser = await firebase.database().ref("anonymous").push("");
         anonymousUser.node = "anonymous"; // adding node key to anonymous user
-        anonymousUser.uid = anonymousUser.key;
+        anonymousUser.uid = anonymousUser.key; // adding uid key to anonymous user
 
         this.syncNotes(anonymousUser);
 
@@ -64,7 +68,6 @@ class App extends Component {
         const anonymousRef = firebase.database().ref(anonymousNode);
         anonymousRef.remove();
       };
-
       //beforeunload needs to return something, so delete the return to work in chrome
       delete event['returnValue'];
     });
@@ -150,35 +153,32 @@ class App extends Component {
 
   // Method for conditionally rendering login and logout on page
   renderAuth = () => {
+    let authStatus;
+    let authMessage;
+
+    // Logout value setting
     if (this.state.user && this.state.user.node !== "anonymous") {
-      return (
-        <div className="authContainer">
-          <Button
-            className="logout"
-            variant="outlined"
-            size="small"
-            onClick={this.logout}
-          >
-            Log Out
-          </Button>
-          <p className="authStatus">Hi, {this.state.user.displayName}!</p>
-        </div>
-      );
+      authStatus = "logout";
+      authMessage = `Hi, ${this.state.user.displayName}`;
+    // Login value setting
     } else {
-        return (
-          <div className="authContainer">
-            <Button
-              className="login"
-              variant="outlined"
-              size="small"
-              onClick={this.login}
-            >
-              Log In
-            </Button>
-            <p className="authStatus">Anonymous user. All notes created here are deleted when you leave. Log in to start saving notes.</p>
-          </div>
-        );
+      authStatus = "login";
+      authMessage = "Anonymous user.All notes created here are deleted when you leave.Log in to start saving notes.";
     };
+
+    return (
+      <div className="authContainer">
+        <Button
+          className={authStatus}
+          variant="outlined"
+          size="small"
+          onClick={this[authStatus]}
+        >
+          {authStatus}
+        </Button>
+        <p className="authStatus">{authMessage}</p>
+      </div>
+    );
   };
 
   render() {
@@ -191,33 +191,30 @@ class App extends Component {
 
               {this.renderAuth()}
 
+              {/* These 2 Routes display different lists in sidebar based on URL */}
               <Route exact path="/" render={ () => {
                 if (this.state.user) {
                   return (
                     <NotesList
-                    currentNoteId={this.state.currentNoteId}
-                    selectNote={this.selectNote}
-                    notes={this.state.notes}
-                    user={this.state.user}
+                      currentNoteId={this.state.currentNoteId}
+                      selectNote={this.selectNote}
+                      notes={this.state.notes}
+                      user={this.state.user}
                     />
                   );
                 } else {
-                  return <p>Loading...</p>;
+                  return <p>...</p>;
                 };
               }} />
+              <Route path="/:node/:uid" render={params => <PublicList {...params} />} />
 
-              <Route path="/:node/:uid" render={ (params) => {
-                return (
-                  <PublicList
-                    {...params}
-                  />
-                );
-              }} />
             </div>
           </header>
 
           <main className={this.state.fullScreen ? "fullScreen" : ""}>
             <div className="wrapper">
+
+              {/* This Route renders the Editor component if on root URL  */}
               <Route exact path="/" render={ () => {
                 if (this.state.user) {
                   return (
@@ -228,10 +225,11 @@ class App extends Component {
                     />
                   );
                 } else {
-                  return <p>Loading...</p>;
+                  return <p>...</p>;
                 };
               }} />
 
+              {/* This Route renders the Public Feed Intro when in Public Feed view */}
               <Route path="/:node/:uid" render={ (params) => {
                 const userUrl = `${window.location.origin}/${params.match.params.node}/${params.match.params.uid}`;
                 return (
@@ -242,10 +240,12 @@ class App extends Component {
                 );
               }} />
 
-              <Route exact path="/:node/:uid/:noteId" render={params => <BlogPost {...params} />} />
+              {/* This Route renders a Public Post component based on URL */}
+              <Route exact path="/:node/:uid/:noteId" render={params => <PublicPost {...params} />} />
             </div>
           </main>
 
+          {/* This is the fullscreen/sidebar toggle */}
           {this.state.fullScreen ?
             <FullscreenExit className="fullScreenToggle" onClick={this.toggleFullScreen} aria-label="Exit full screen and display header" /> :
             <Fullscreen className="fullScreenToggle" onClick={this.toggleFullScreen} aria-label="Enter full screen and hide header" />
