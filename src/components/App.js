@@ -84,12 +84,12 @@ class App extends Component {
     // Start new Firebase event listener to constantly grab notes in database
     const newNode = `${newUser.node}/${newUser.uid}`;
     const userRef = firebase.database().ref(newNode);
-    
+
     userRef.on("value", (response) => {
       const data = response.val();
-  
+
       const notesArray = [];
-  
+
       for (let key in data) {
         notesArray.push({
           id: key,
@@ -99,10 +99,10 @@ class App extends Component {
           createdTimestamp: data[key].createdTimestamp
         });
       };
-  
+
       // Sort notes by newest created note first
       notesArray.sort((a, b) => a.createdTimestamp < b.createdTimestamp);
-      
+
       this.setState({
         notes: notesArray
       });
@@ -163,7 +163,7 @@ class App extends Component {
     // Login value setting
     } else {
       authStatus = "login";
-      authMessage = "Anonymous user.All notes created here are deleted when you leave.Log in to start saving notes.";
+      authMessage = "Anonymous user. All notes created here are deleted when you leave. Log in to start saving notes.";
     };
 
     return (
