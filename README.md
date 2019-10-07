@@ -1,24 +1,25 @@
-# Notetaking App
+# Public Notes
 
-## MVP
+[public.danfitz.com](https://public.danfitz.com)
 
-Plain-text notetaker with editor section and notes list section. Editor section contains a title input and text input that gets saved to Firebase. Notes list section displays all notes in Firebase and allows you to change the contents of Editor based on which note you choose. (Classic notetaking experience.)
+Public Notes is a [Markdown](https://www.markdownguide.org/) note-taking app that works on desktop and mobile. Like any other note-taking app, you get a rich text editor that auto-saves your notes as you type. If you want to share a note, simply click `Make Note Public`, and a live URL is generated that you can share with anyone in the world. The magic of Public Notes is that your live note will be rendered into HTML, creating a blog-like reading experience!
 
-## Stretch Goals
+## Tools Used
 
-* Firebase authentication
-* Rich text editor option
-* Markdown editor option
-
-## Pseudocode
-
-1. Inside `App` component, include 2 child components: `NotesList` and `Editor`.
-2. `App` component will have a `notes` state that mirrors the Firebase DB using `dbRef.on("value", ...)`.
-3. The `notes` state gets passed to `NotesList` as a prop and helps `NotesList` render the full list of notes.
-4. When a user clicks on a note in `NotesList`, it updates `currentNote` in `App` state, which then re-renders `Editor` component with contents of selected note.
-5. When user edits and saves the current note in `Editor`, it updates the current node in Firebase DB. Otherwise, it creates a new note in Firebase. (This then will update the `notes` state in `App` automatically.)
+* React
+* React Router
+* CSS (via Sass)
+* [React SimpleMDE](https://github.com/RIP21/react-simplemde-editor)
+* [markdown-to-jsx](https://github.com/probablyup/markdown-to-jsx)
+* [github-markdown-css](https://github.com/sindresorhus/github-markdown-css)
 
 
-## Wireframe
+## Feature Roadmap
 
-[Link](https://wireframepro.mockflow.com/view/M99b6e0cff62de62b6bad6aea21ba8a591566942467360)
+**Improve onboarding experience.** When you first enter the app, not enough time is spent walking through how to use the app. You're literally thrown straight into the functionality. I'd like to create an onboarding experience for new users.
+
+**Add note categories and other features to navigate notes better.** Currently, as the user adds more and more notes, it just becomes one long unwieldy list. I want to add functionality like a search bar, note categories, and a better UX to make navigating through and finding notes pleasant and easy.
+
+## Known Bugs
+
+* On mobile, the notes list starts to grow in height if you add lots and lots of notes.
