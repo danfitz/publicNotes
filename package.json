@@ -1,5 +1,5 @@
 {
-  "name": "Public Notes",
+  "name": "publicNotes",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
